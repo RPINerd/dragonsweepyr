@@ -1,0 +1,15 @@
+[project]
+name = "dragonsweepyr"
+version = "0.1.0"
+description = "RPG twist on the classic Minesweeper game"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pygame-ce>=2.5.6",
+]
+
+[project.urls]
+twitter = "https://twitter.com/danielben"
+itchio = "https://danielben.itch.io/"
+dragonsweeper_itchio = "https://danielben.itch.io/dragonsweeper"
+official_website = "https://dragonsweeper.com/"
