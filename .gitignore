@@ -1,0 +1,14 @@
+# IDE
+*.vscode
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Scratch files
+slop/
+*.tmp
+*.temp
+
+# Logs
+*.log
