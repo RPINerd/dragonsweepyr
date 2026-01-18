@@ -36,15 +36,3 @@ def res_to_frame(x: int, y: int) -> int:
 def res_to_frame24(x: int, y: int) -> int:
     """stripXYToFrame24"""
     return (x // 24) + (y // 24) * 10
-
-
-def xp_to_next_level(level: int) -> int:
-    """
-    Return the number of XP required to reach the next level
-
-    Level: 1   2  3  4  5   6   7   8   9  10  11  12  13  14  15
-    HP:    5      6     7       8       9      10      11      12
-    """
-    xp_lookup = [0, 4, 5, 7, 9, 9, 10, 12, 12, 12, 15, 18, 21, 21, 25]
-    player_stat = min(level, len(xp_lookup) - 1)
-    return xp_lookup[player_stat]
