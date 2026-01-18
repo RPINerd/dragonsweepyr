@@ -1,17 +1,11 @@
 """Main game application with a 13x10 grid."""
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass, field
 
 import pygame
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
-LOGGER = logging.getLogger(__name__)
+from dragonsweepyr.logger import LOGGER, setup_logger
 
 
 @dataclass
@@ -134,6 +128,7 @@ class GameWindow:
 
 def main() -> None:
     """Main function to run the game."""
+    setup_logger()
     config = GameConfig()
     game_window = GameWindow(config)
     game_window.run()

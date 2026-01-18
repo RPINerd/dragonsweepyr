@@ -10,7 +10,7 @@ slop/
 *.tmp
 *.temp
 ref/
-archive/
+archive/*
 
 # Logs
 *.log

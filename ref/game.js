@@ -3,8 +3,6 @@
 "use_strict"
 
 let RELEASE = true;
-let debugOn = false;
-let debugLines = [];
 let fontDebug;
 /** @type {BitmapFont} */
 let fontUINumbers;
@@ -1240,457 +1238,13 @@ function play(sndEventId, volume = 0)
     return sound;
 }
 
-function grantXP(xp)
-{
-    state.player.xp += xp;
-    state.player.score += xp;
-}
-
 function makeEmptyAndReveal(a)
 {
     recursiveReveal(a);
     makeEmpty(a);
 }
 
-/** @param {Actor} a*/
-function makeEmpty(a)
-{
-    a.reset();
-    a.id = ActorId.Empty;
-    a.strip = stripMonsters;
-    a.stripFrame = 1; // empty sprite
-    return a;
-}
 
-/** @param {Actor} a*/
-function makeDecoration(a, strip, frame)
-{
-    a.reset();
-    a.id = ActorId.Decoration;
-    a.strip = strip;
-    a.stripFrame = frame;
-}
-
-/** @param {Actor} a*/
-function makeDragon(a)
-{
-    a.reset();
-    a.id = ActorId.Dragon;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(200, 311);
-    a.deadStripFrame = stripXYToFrame(230, 310);
-    a.isMonster = true;
-    a.monsterLevel = 13;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeFidel(a)
-{
-    a.reset();
-    a.id = ActorId.Fidel;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(0, 408);
-    a.isMonster = true;
-    a.monsterLevel = 0;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeDragonEgg(a)
-{
-    a.reset();
-    a.id = ActorId.DragonEgg;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(0, 250);
-    a.deadStripFrame = a.stripFrame + 1;
-    a.isMonster = true;
-    a.monsterLevel = 0;
-    a.xp = 3;
-}
-
-/** @param {Actor} a*/
-function makeSpellRevealSlimes(a)
-{
-    a.reset();
-    a.id = ActorId.SpellRevealSlimes;
-    a.strip = stripIcons;
-    a.stripFrame = 19;
-}
-
-/** @param {Actor} a*/
-function makeSpellRevealRats(a)
-{
-    a.reset();
-    a.id = ActorId.SpellRevealRats;
-    a.strip = stripIcons;
-    a.stripFrame = 29;
-}
-
-/** @param {Actor} a*/
-function makeCrown(a)
-{
-    a.reset();
-    a.id = ActorId.Crown;
-    a.strip = stripIcons;
-    a.stripFrame = 142;//stripXYToFrame(40, 230);
-}
-
-/** @param {Actor} a*/
-function makeSpellDisarm(a)
-{
-    a.reset();
-    a.id = ActorId.SpellDisarm;
-    a.strip = stripIcons;
-    a.stripFrame = 35;
-}
-
-/** @param {Actor} a*/
-function makeOrb(a)
-{
-    a.reset();
-    a.id = ActorId.Orb;
-    a.strip = stripIcons;
-    a.stripFrame = 23;
-}
-
-/** @param {Actor} a*/
-function makeSpellOrb(a)
-{
-    a.reset();
-    a.id = ActorId.SpellMakeOrb;
-    a.strip = stripIcons;
-    a.stripFrame = 10;
-}
-
-/** @param {Actor} a*/
-function makeMedikit(a)
-{
-    a.reset();
-    a.id = ActorId.Medikit;
-    // a.strip = stripItems;
-    // a.stripFrame = stripXYToFrame(22, 22);
-    // a.heal = 4;
-    a.strip = stripIcons;
-    a.stripFrame = 22;
-}
-
-/** @param {Actor} a*/
-function makeRatKing(a)
-{
-    a.reset();
-    a.id = ActorId.RatKing;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(70, 265);
-    a.isMonster = true;
-    a.monsterLevel = 5;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeRat1(a)
-{
-    a.reset();
-    a.id = ActorId.Rat;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(90, 265);
-    a.isMonster = true;
-    a.monsterLevel = 1;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeBat2(a)
-{
-    a.reset();
-    a.id = ActorId.Bat;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(134, 231);
-    a.isMonster = true;
-    a.monsterLevel = 2;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeSkeleton3(a)
-{
-    a.reset();
-    a.id = ActorId.Skeleton;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(70, 134);
-    // a.stripFrame = stripXYToFrame(55, 100);
-    // a.stripFrame = stripXYToFrame(250, 230);
-    a.isMonster = true;
-    a.monsterLevel = 3;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeGuard7(a)
-{
-    a.reset();
-    a.id = ActorId.Guard;
-    a.strip = stripMonsters;
-    // a.stripFrame = stripXYToFrame(70, 134);
-    // a.stripFrame = stripXYToFrame(55, 100);
-    // a.stripFrame = stripXYToFrame(250, 230); // small snake
-    // a.stripFrame = stripXYToFrame(250, 250); // red snake
-    // a.stripFrame = stripXYToFrame(233, 231); // drake
-    a.stripFrame = stripXYToFrame(200, 200); // drake
-    a.isMonster = true;
-    a.monsterLevel = 7;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeSnake7(a)
-{
-    a.reset();
-    a.id = ActorId.Snake;
-    a.strip = stripMonsters;
-    // a.stripFrame = stripXYToFrame(70, 134);
-    // a.stripFrame = stripXYToFrame(55, 100);
-    // a.stripFrame = stripXYToFrame(250, 230); // small snake
-    a.stripFrame = stripXYToFrame(250, 250); // red snake
-    // a.stripFrame = stripXYToFrame(233, 231); // drake
-    a.isMonster = true;
-    a.monsterLevel = 7;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeMineKing(a)
-{
-    a.reset();
-    a.id = ActorId.MineKing;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(250, 135);
-    // a.stripFrame = stripXYToFrame(150+16, 486); // bombucha
-    a.isMonster = true;
-    a.monsterLevel = 10;
-    a.xp = a.monsterLevel;
-    return a;
-}
-
-// /** @param {Actor} a*/
-// function makeDarkKnight7(a)
-// {
-//     a.reset();
-//     a.id = ActorId.DarkKnight;
-//     a.strip = stripMonsters;
-//     a.stripFrame = stripXYToFrame(200, 100);
-//     a.monsterLevel = 7;
-//     a.xp = a.monsterLevel;
-// }
-
-/** @param {Actor} a*/
-function makeGazer(a)
-{
-    a.reset();
-    a.id = ActorId.Gazer;
-    a.strip = stripMonsters;
-    // a.stripFrame = stripXYToFrame(10, 170);
-    // a.stripFrame = stripXYToFrame(70, 70);
-    a.stripFrame = stripXYToFrame(135, 180);
-    a.isMonster = true;
-    a.monsterLevel = 5;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeSlime5(a)
-{
-    a.reset();
-    a.id = ActorId.Slime;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(86, 473);
-    a.isMonster = true;
-    a.monsterLevel = 5;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeWizard(a)
-{
-    a.reset();
-    a.id = ActorId.Wizard;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(72, 76);
-    a.isMonster = true;
-    a.monsterLevel = 1;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeBigSlime8(a)
-{
-    a.reset();
-    a.id = ActorId.BigSlime;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(120, 455);
-    a.isMonster = true;
-    a.monsterLevel = 8;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeMinotaur6(a)
-{
-    a.reset();
-    a.id = ActorId.Minotaur;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(200, 326);
-    // a.stripFrame = stripXYToFrame(180, 170);
-    a.isMonster = true;
-    a.monsterLevel = 6;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeGargoyle4(a)
-{
-    a.reset();
-    a.id = ActorId.Gargoyle;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(26, 210);
-    a.isMonster = true;
-    a.monsterLevel = 4;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeGiant9(a)
-{
-    a.reset();
-    a.id = ActorId.Giant;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(0, 450);
-    a.isMonster = true;
-    a.monsterLevel = 9;
-    a.xp = a.monsterLevel;
-}
-
-/** @param {Actor} a*/
-function makeGnome(a)
-{
-    a.reset();
-    a.id = ActorId.Gnome;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(40, 408);
-    a.isMonster = true;
-    a.monsterLevel = 0;
-    a.xp = 9;
-}
-
-
-// /** @param {Actor} a*/
-// function makeDeath9(a)
-// {
-//     a.reset();
-//     a.id = ActorId.Death;
-//     a.strip = stripMonsters;
-//     a.stripFrame = stripXYToFrame(130, 340);
-//     a.monsterLevel = 9;
-//     a.xp = a.monsterLevel;
-// }
-
-// /** @param {Actor} a*/
-// function makeDarkKnight5(a)
-// {
-//     a.reset();
-//     a.id = ActorId.DarkKnight;
-//     a.strip = stripMonsters;
-//     a.stripFrame = stripXYToFrame(200, 168);
-//     a.monsterLevel = 5;
-//     a.xp = a.monsterLevel;
-// }
-
-// /** @param {Actor} a*/
-// function makeEye5(a)
-// {
-//     a.reset();
-//     a.id = ActorId.Eye;
-//     a.strip = stripMonsters;
-//     a.stripFrame = stripXYToFrame(135, 167);
-//     a.monsterLevel = 5;
-//     a.xp = a.monsterLevel;
-// }
-
-/** @param {Actor} a*/
-function makeChest(a)
-{
-    a.reset();
-    a.id = ActorId.Chest;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(70, 360);
-    a.contains = makeTreasure5;
-}
-
-/** @param {Actor} a*/
-function makeTreasure1(a)
-{
-    a.reset();
-    a.id = ActorId.Treasure;
-    a.strip = stripIcons;
-    a.stripFrame = 30;
-    a.xp = 1;
-}
-
-/** @param {Actor} a*/
-function makeTreasure3(a)
-{
-    a.reset();
-    a.id = ActorId.Treasure;
-    a.strip = stripIcons;
-    a.stripFrame = 31;
-    a.xp = 3;
-}
-
-function makeTreasure5(a)
-{
-    a.reset();
-    a.id = ActorId.Treasure;
-    a.strip = stripIcons;
-    a.stripFrame = 24;
-    a.xp = 5;
-}
-
-/** @param {Actor} a*/
-function makeMimic(a)
-{
-    a.reset();
-    a.id = ActorId.Mimic;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(70, 360);
-    a.isMonster = true;
-    a.monsterLevel = 11;
-    a.xp = a.monsterLevel;
-    a.mimicMimicking = true;
-}
-
-/** @param {Actor} a*/
-function makeWall(a)
-{
-    a.reset();
-    a.id = ActorId.Wall;
-    // a.strip = stripIcons;
-    // a.stripFrame = stripXYToFrame(70, 7);
-    a.strip = stripIcons;
-    a.stripFrame = 11;
-}
-
-/** @param {Actor} a*/
-function makeMine(a)
-{
-    a.reset();
-    a.id = ActorId.Mine;
-    a.strip = stripMonsters;
-    a.stripFrame = stripXYToFrame(150, 455);
-    a.deadStripFrame = stripXYToFrame(170, 455);
-    a.isMonster = true;
-    a.monsterLevel = 100;
-    a.xp = 3;
-}
 
 function getAttackNumber(tx, ty)
 {
@@ -2791,40 +2345,6 @@ function updatePlaying(ctx, dt)
     let isLevelupButtonEnabled = state.player.hp > 0 && state.player.xp >= nextLevelXP(state.player.level) && state.status == GameStatus.Playing;
     let mustLevelup = levelupButtonR.contains(mousex, mousey) && clickedLeft && isLevelupButtonEnabled;
 
-    if(debugOn)
-    {
-        if(keysJustPressed.includes('w'))
-        {
-            localStorage.clear();
-            loadSettings();
-            musicToRun = null;
-        }
-
-        // cheats
-        if(!RELEASE)
-        {
-            if(keysJustPressed.includes('l'))
-            {
-                state.player.xp += nextLevelXP(state.player.level);
-                mustLevelup = true;
-            }
-
-            if(keysJustPressed.includes('k'))
-            {
-                for(let a of state.actors.filter(a => a.id == ActorId.Dragon || a.id == ActorId.MineKing))
-                {
-                    a.monsterLevel = 1;
-                }
-            }
-
-            if(keysJustPressed.includes('i'))
-            {
-                state.player.hp = 2;
-                state.status = GameStatus.Playing;
-            }
-        }
-    }
-
     if(mustLevelup)
     {
         // leveling
@@ -2927,41 +2447,6 @@ function updatePlaying(ctx, dt)
         }
     }
 
-    // debugLines.push("hover "+hoveringActorIndex+ " click:"+clickedActorIndex + " hp "+state.player.hp+ " xp "+state.player.xp + " next "+nextLevelXP(state.player.level));
-    // debugLines.push("level "+state.player.level+ " next "+nextLevelXP(state.player.level));
-    // debugLines.push("maxhp "+state.player.maxHP+ " hp "+state.player.hp);
-    if(debugOn)
-    {
-        let stats = state.stats;
-        debugLines.push("tiles "+(stats.total) + " empties "+stats.empties);
-        debugLines.push("monsterXP "+stats.totalXP +
-                        " xpToMax "+stats.xpRequiredToMax+
-                        " excessXP "+stats.excessXP);
-        debugLines.push("monsterHP "+stats.totalMonsterHP+
-                        " playerHP "+stats.totalHPOnMaxLevel);
-        // debugLines.push("time elapsed pushing button: "+state.timeElapsedPushingButton);
-        debugLines.push("level: "+state.player.level);
-        debugLines.push("shift: "+shiftIsPressed);
-        // debugLines.push("hp anims:"+state.heartAnimations.length+" xp:"+state.xpAnimations.length);
-        // for(let a of state.actors)
-        // {
-        //     let r = getRectForTile(a.tx, a.ty);
-        //     if(r.contains(mousex, mousey))
-        //     {
-        //         debugLines.push("hovering tile  "+a.tx + ", "+a.ty);
-        //     }
-        // }
-    }
-
-    // {
-    //     let xpStr = "";
-    //     for(let i = 1; i < 19; i++)
-    //     {
-    //         xpStr += ""+i+": " + nextLevelXP(i)+" ";
-    //     }
-    //     debugLines.push(xpStr);
-    // }
-
     if(state.status == GameStatus.Playing)
     {
         if(state.player.hp == 0)
@@ -3061,19 +2546,6 @@ function updatePlaying(ctx, dt)
         startHeroAnim(HERO_IDLE);
     }
 
-    // if(state.status == GameStatus.Dead)
-    // {
-    //     if(clickedHUD) resetGame = true;
-    // }
-    // else
-    // if(state.status == GameStatus.DragonDefeated)
-    // {
-    //     if(clickedHUD)
-    //     {
-    //         state.status = GameStatus.WinScreen;
-    //     }
-    // }
-
     // screen shake
     let screenx = 0;
     let screeny = 0;
@@ -3106,7 +2578,7 @@ function updatePlaying(ctx, dt)
         // if(a.id == ActorId.Dragon && a.defeated) icon = 1;
         drawFrame(ctx, stripButtons, icon, centerx, centery);
         if(icon != 1 && icon != 2) drawFrame(ctx, stripButtons, state.buttonFrames[a.tx + a.ty*state.gridW], centerx, centery);
-        if(a.revealed || debugOn || showEverything)
+        if(a.revealed || showEverything)
         {
             if(isEmpty(a))
             {
@@ -3154,7 +2626,7 @@ function updatePlaying(ctx, dt)
                     }
                 }
                 else
-                if(!a.mimicMimicking || debugOn)
+                if(!a.mimicMimicking)
                 {
                     // fontUI.drawLine(ctx, ""+a.monsterLevel, r.centerx() + 1, r.bottom() - 4, FONT_CENTER|FONT_BOTTOM);
                     drawLineOutlineCentered(ctx, ""+a.monsterLevel, r.centerx() + 1, r.bottom() - 4, FONT_CENTER|FONT_BOTTOM)
@@ -3175,14 +2647,6 @@ function updatePlaying(ctx, dt)
             else
             {
                 drawFrame(ctx, a.strip, a.stripFrame, centerx, centery);
-                if(debugOn)
-                {
-                    if(a.id == ActorId.Wall)
-                    {
-                        drawLineOutlineCentered(ctx, a.wallHP + "/" + a.wallMaxHP, r.centerx() + 1, r.bottom() - 3, FONT_CENTER|FONT_BOTTOM);
-                        // drawLineOutlineCentered(ctx, ""+a.contains, r.centerx() + 1, r.bottom() - 15, FONT_CENTER|FONT_BOTTOM);
-                    }
-                }
             }
         }
 
@@ -3761,29 +3225,6 @@ function onUpdate(phase, dt)
 
         drawFrame(ctx, stripScanlines, 0, 0, 0);
 
-        if(keysJustPressed.includes('D'))
-        {
-            debugOn = !debugOn;
-        }
-
-        if(debugOn)
-        {
-            // TODO: use internal font in common code
-            ctx.save();
-            // ctx.fillStyle = "black";
-            // ctx.fillRect(0, 20, canvas.width, canvas.height - 20);
-            ctx.fillStyle = "white";
-            ctx.font = '32px serif';
-            let offy = 20;
-            for(let line of debugLines)
-            {
-                fontDebug.drawLine(ctx, line, 5, offy);
-                // ctx.fillText(line, 5, offy);
-                offy += fontDebug.lineh;
-            }
-            ctx.restore();
-        }
-        debugLines = [];
     }
 }
 
