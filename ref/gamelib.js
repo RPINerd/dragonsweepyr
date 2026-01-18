@@ -74,7 +74,7 @@ function loadSoundStreamed(path)
     {
         allSounds.push(ret);
     };
-    return ret;    
+    return ret;
 }
 
 function loadSound(path)
@@ -109,7 +109,7 @@ function loadImage(path, fnAfterLoad)
         pendingStuffToLoad -= 1;
         if(fnAfterLoad != null) fnAfterLoad(ret);
     };
-    return ret;    
+    return ret;
 }
 
 function loadStrip(path, cellw, cellh, pivotx, pivoty, colorMultiplier = 0xffffff, fnAfterLoad)
@@ -119,9 +119,9 @@ function loadStrip(path, cellw, cellh, pivotx, pivoty, colorMultiplier = 0xfffff
     {
         let framesW = Math.floor(img.width / cellw);
         let framesH = Math.floor(img.height / cellh);
-        for(let i = 0; i < framesH; i++) 
+        for(let i = 0; i < framesH; i++)
         {
-            for(let j = 0; j < framesW; j++) 
+            for(let j = 0; j < framesW; j++)
             {
                 let frame = new StripFrame();
                 frame.pivotx = pivotx;
@@ -140,13 +140,13 @@ function loadStrip(path, cellw, cellh, pivotx, pivoty, colorMultiplier = 0xfffff
                     let g = (colorMultiplier >> 8 & 0xff)/0xff;
                     let b = (colorMultiplier >> 0 & 0xff)/0xff;
                     let imgData = ctx.getImageData(0, 0, cellw, cellh);
-                    for(let i = 0; i < imgData.data.length; i += 4) 
+                    for(let i = 0; i < imgData.data.length; i += 4)
                     {
                         imgData.data[i + 0] *= r;
                         imgData.data[i + 1] *= g;
                         imgData.data[i + 2] *= b;
                     }
-                    ctx.putImageData(imgData, 0, 0);                
+                    ctx.putImageData(imgData, 0, 0);
                 }
                 frame.img = frameImage;
                 // console.log("r "+(j + i*framesW)+" es "+frame.rect.toString());
@@ -223,12 +223,12 @@ function fitCanvas()
         if(windowH > windowW)
         {
             targetW = windowW;
-            targetH = targetW / widthOverHeight;    
+            targetH = targetW / widthOverHeight;
         }
         else
         {
             targetH = windowH * 0.975;
-            targetW = targetH * widthOverHeight;    
+            targetW = targetH * widthOverHeight;
         }
         smoothing = true;
     }
@@ -253,7 +253,7 @@ function fitCanvas()
 function onLoadPage()
 {
     document.addEventListener("focus",
-        (event) => 
+        (event) =>
         {
             shiftIsPressed = false;
         },
@@ -268,7 +268,7 @@ function onLoadPage()
         true,
       );
 
-    document.addEventListener("touchstart", 
+    document.addEventListener("touchstart",
         function (evt)
         {
             evt.preventDefault();
@@ -308,22 +308,22 @@ function onLoadPage()
         { passive: false });
 
 
-    document.onmousemove = function (me) 
+    document.onmousemove = function (me)
     {
         var rect = canvas.getBoundingClientRect();
-        mouseScreenX = me.clientX - rect.x; 
+        mouseScreenX = me.clientX - rect.x;
         mouseScreenY = me.clientY - rect.y;
     };
 
     document.onclick = function(me) {activatePlayerInteraction();}
 
-    document.addEventListener('contextmenu', (event) => 
+    document.addEventListener('contextmenu', (event) =>
     {
         // Prevent the default context menu from appearing
         event.preventDefault();
     });
 
-    document.onmousedown = function (e) 
+    document.onmousedown = function (e)
     {
         shiftIsPressed = e.shiftKey;
         if(e.button == 0)
@@ -340,22 +340,22 @@ function onLoadPage()
         activatePlayerInteraction();
     };
 
-    document.onmouseup = function (e) 
+    document.onmouseup = function (e)
     {
         // console.log("mup button:"+me.button+" buttons:"+me.buttons + " target: "+me.target);
         if(e.button == 0)
         {
             mousePressed = false;
         }
-        else 
+        else
         if (e.which && e.which === 3 || e.button === 2)
         {
             mousePressedRight = false;
         }
     };
 
-    document.onkeydown = function (keyEvent) 
-    { 
+    document.onkeydown = function (keyEvent)
+    {
         keysJustPressed.push(keyEvent.key);
         keysPressed.push(keyEvent.key);
         shiftIsPressed = keyEvent.shiftKey;
@@ -666,21 +666,6 @@ function arraysEqual(a1, a2)
     return true;
 }
 
-function lerp( a, b, alpha ) 
-{
-    return a + alpha * ( b - a );
-}
-
-function distance(x1, y1, x2, y2)
-{
-    return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-}
-
-function distanceSq(x1, y1, x2, y2)
-{
-    return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
-}
-
 const FONT_TOP = 4;
 const FONT_CENTER = 1;
 const FONT_VCENTER = 2;
@@ -721,7 +706,7 @@ class BitmapFont
         this.chars = textMap;
         this.lineh = strip.frames[0].rect.h;
         this.max_char_height = this.lineh;
-        for(let i = 0; i < textMap.length; i++) 
+        for(let i = 0; i < textMap.length; i++)
         {
             const c = textMap[i];
             let fr = strip.frames[i];
@@ -862,14 +847,14 @@ class BitmapFont
         let maxW = 0;
         let startx = x;
         let starty = y;
-        for (let i = 0; i < text.length; i++) 
+        for (let i = 0; i < text.length; i++)
         {
             const char = text[i];
             let index = this.chars.indexOf(char);
             console.assert(index >= 0, "invalid char: "+char + " in string:"+text);
             let g = this.glyphs[index];
             let glyphW = g.rect.w;
-            if(char == " " && this.spaceWidth > 0) glyphW = this.spaceWidth; 
+            if(char == " " && this.spaceWidth > 0) glyphW = this.spaceWidth;
             if(render)
             {
                 let frame = this.strip.frames[index];
@@ -940,17 +925,17 @@ function canvasFromImage(image)
     return ret;
 }
 
-function shuffle(array) 
+function shuffle(array)
 {
     let currentIndex = array.length;
-  
+
     // While there remain elements to shuffle...
     while (currentIndex != 0) {
-  
+
       // Pick a remaining element...
       let randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-  
+
       // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex], array[currentIndex]];
@@ -960,11 +945,6 @@ function shuffle(array)
 function rnd(start, end)
 {
     return Math.floor(Math.random() * (end - start) + start);
-}
-
-function r2d(r)
-{
-    return 180 * r / Math.PI;
 }
 
 function clamp01(v)
@@ -1010,9 +990,9 @@ function tintImage(image, color)
     let b = color >> 0 & 0xff;
     let ctx = get2DContext(image);
     let imgData = ctx.getImageData(0, 0, image.width, image.height);
-    for(let i = 0; i < imgData.data.length; i += 4) 
+    for(let i = 0; i < imgData.data.length; i += 4)
     {
-        
+
         imgData.data[i + 0] = r;
         imgData.data[i + 1] = g;
         imgData.data[i + 2] = b;
@@ -1027,25 +1007,13 @@ function multiplyImageColor(image, colorMultiplier)
     let b = (colorMultiplier >> 0 & 0xff)/0xff;
     let ctx = image.getContext("2d");
     let imgData = ctx.getImageData(0, 0, image.width, image.height);
-    for(let i = 0; i < imgData.data.length; i += 4) 
+    for(let i = 0; i < imgData.data.length; i += 4)
     {
         imgData.data[i + 0] *= r;
         imgData.data[i + 1] *= g;
         imgData.data[i + 2] *= b;
     }
     ctx.putImageData(imgData, 0, 0);
-}
-
-function isMobile()
-{
-    let isMobile = ('ontouchstart' in document.documentElement && /mobi/i.test(navigator.userAgent));
-    // isMobile = true;
-    return isMobile;
-}
-
-function supportsRightClick()
-{
-    return !isMobile();
 }
 
 /** @param ctx {CanvasRenderingContext2D} */
@@ -1060,7 +1028,7 @@ function showLoadingC64(ctx, rect)
 
     let bandCount = Math.floor(rect.h / bandH) + 1;
     let offy = 0;
-    for(let i = 0; i < bandCount; i++) 
+    for(let i = 0; i < bandCount; i++)
     {
         ctx.fillStyle = pickRandomArrayElement(colors);
         ctx.fillRect(rect.x, rect.y + offy, rect.w, bandH);

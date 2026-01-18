@@ -182,134 +182,6 @@ class FrameAnimation
     }
 }
 
-class PlayerState
-{
-    constructor()
-    {
-        this.maxHP = 4;
-        this.hp = this.maxHP;
-        this.xp = 0;
-        this.level = 1;
-        this.score = 0;
-    }
-}
-
-class GameStatus
-{
-    static None = "none";
-    static Playing = "playing";
-    static Dead = "dead";
-    static WinScreen = "win_screen";
-    static GeneratingDungeon = "generating";
-}
-
-class ActorId
-{
-    static None = "none";
-    static Empty = "empty";
-    static Orb = "orb";
-    static SpellMakeOrb = "spell_reveal";
-    static Mine = "mine";
-    static MineKing = "mine king";
-    static Dragon = "dragon";
-    static Wall = "wall";
-    static Mimic = "mimic";
-    static Medikit = "medikit";
-    static RatKing = "rat king";
-    static Rat = "rat";
-    static Slime = "slime";
-    static Gargoyle = "gargoyle";
-    static Minotaur = "minotaur";
-    static Chest = "chest";
-    static Skeleton = "skeleton";
-    static Treasure = "treasure";
-    static Snake = "snake";
-    static Giant = "giant";
-    static Decoration = "decoration";
-    static Wizard = "wizard";
-    static Gazer = "gazer";
-    static SpellDisarm = "spell_disarm";
-    static BigSlime = "big slime";
-    static SpellRevealRats = "spell_reveal_rats";
-    static SpellRevealSlimes = "spell_reveal_slimes";
-    static Gnome = "gnome";
-    static Bat = "bat";
-    static Guard = "guardian";
-    static Crown = "crown";
-    static Fidel = "fidel";
-    static DragonEgg = "dragon_egg";
-}
-
-class Actor
-{
-    constructor()
-    {
-        this.tx = 0;
-        this.ty = 0;
-        this.fixed = false;
-
-        this.id = ActorId.None;
-        this.strip = null;
-        this.stripFrame = 0;
-        this.deadStripFrame = 0;
-        this.revealed = false;
-        this.monsterLevel = 0;
-        this.xp = 0;
-        this.mimicMimicking = false; // TODO: necessary?
-        this.defeated = false;
-        this.mark = 0;
-        this.trapDisarmed = false;
-        this.contains = null;
-        this.wallHP = 0;
-        this.wallMaxHP = 0;
-        this.isMonster = false;
-        this.name = "none";
-        this.minotaurChestLocation = [-1, -1];
-    }
-
-    copyFrom(other)
-    {
-        this.id = other.id;
-        this.strip = other.strip;
-        this.stripFrame = other.stripFrame;
-        this.deadStripFrame = other.deadStripFrame;
-        this.revealed = other.revealed;
-        this.monsterLevel = other.monsterLevel;
-        this.xp = other.xp;
-        this.mimicMimicking = other.mimicMimicking;
-        this.defeated = other.defeated;
-        this.mark = other.mark;
-        this.trapDisarmed = other.trapDisarmed;
-        this.contains = other.contains;
-        this.wallHP = other.wallHP;
-        this.wallMaxHP = other.wallMaxHP;
-        this.isMonster = other.isMonster;
-        this.name = other.name;
-        this.minotaurChestLocation[0] = other.minotaurChestLocation[0];
-        this.minotaurChestLocation[1] = other.minotaurChestLocation[1];
-    }
-
-    reset()
-    {
-        let temp = new Actor();
-        this.copyFrom(temp);
-    }
-}
-
-class GameStats
-{
-    constructor()
-    {
-        this.total = 0;
-        this.empties = 0;
-        this.totalXP = 0;
-        this.xpRequiredToMax = 0;
-        this.excessXP = 0;
-        this.totalHPOnMaxLevel = 0;
-        this.totalMonsterHP = 0;
-    }
-}
-
 class GameState
 {
     constructor()
@@ -362,25 +234,6 @@ class GameState
         this.stampsCollectedThisRun = [];
         this.killedRats = 0;
     }
-}
-
-function stripXYToFrame(x, y)
-{
-    return Math.floor(x/16) + Math.floor(y/16) * 16;
-}
-
-function stripXYToFrame24(x, y)
-{
-    return Math.floor(x/24) + Math.floor(y/24) * 10;
-}
-
-function nextLevelXP(level)
-{
-    //              1  2  3  4  5   6   7   8   9  10  11  12  13  14  15 (level)
-    //              5     6     7       8       9      10      11      12 (hp)
-    let table = [0, 4, 5, 7, 9, 9, 10, 12, 12, 12, 15, 18, 21, 21, 25];
-    let index = Math.min(level, table.length - 1);
-    return table[index];
 }
 
 function loadSettings()
@@ -479,7 +332,7 @@ function generateDungeon()
                 currentButtonBag = buttonFrameBag.slice();
                 shuffle(currentButtonBag);
             }
-            
+
             if(x == 0 && y == 0) state.buttonFrames[x + y * state.gridW] = 25;
             else if(x == state.gridW - 1 && y == 0) state.buttonFrames[x + y * state.gridW] = 26;
             else state.buttonFrames[x + y * state.gridW] = currentButtonBag.pop();
@@ -538,7 +391,7 @@ function generateDungeon()
     // add(2, makeMedikit);//.forEach(a => a.revealed = true);
     // add(1, makeFidel);
     add(1, makeDragonEgg);
-    
+
     endLayer();
 
     beginLayer();
@@ -633,7 +486,7 @@ function generateDungeon()
             let availableActor = state.actors.find(a => isEmpty(a));
             if(availableActor == undefined) continue;
             availableActor.copyFrom(layerActorToAdd);
-            layerActors.push(availableActor);            
+            layerActors.push(availableActor);
         }
 
         let bestHappiness = happiness();
@@ -657,7 +510,7 @@ function generateDungeon()
                         happiestReplacement = b;
                     }
                 }
-        
+
                 if(happiestReplacement != null)
                 {
                     swapPlaces(a, happiestReplacement);
@@ -725,7 +578,7 @@ function generateDungeon()
                 {
                     ret += 10000;
                 }
-    
+
                 // let target = getGnomeFavoriteJumpTarget();
                 // if(target != null && target.tx == a.tx && target.ty == a.ty)
                 // {
@@ -815,7 +668,7 @@ function generateDungeon()
                     if(b.id != ActorId.Chest) continue;
                     if(b.tx == a.tx) continue;
                     if(distance(a.tx, a.ty, b.tx, b.ty) >= 2) continue;
-                    
+
                     chests++;
 
                     if(state.actors.find(c => c.id == ActorId.Minotaur && c !== a && distance(c.tx, c.ty, b.tx, b.ty) < 2) != undefined)
@@ -857,10 +710,10 @@ function generateDungeon()
                     if(dist < ORB_RADIUS)
                     {
                         // things I don't want to ever reveal
-                        if(b.id == ActorId.Dragon || 
-                            b.id == ActorId.Gazer || 
-                            b.id == ActorId.Chest || 
-                            b.id == ActorId.SpellMakeOrb || 
+                        if(b.id == ActorId.Dragon ||
+                            b.id == ActorId.Gazer ||
+                            b.id == ActorId.Chest ||
+                            b.id == ActorId.SpellMakeOrb ||
                             b.id == ActorId.RatKing ||
                             b.id == ActorId.Mine ||
                             b.id == ActorId.Fidel ||
@@ -926,8 +779,8 @@ function generateDungeon()
                     if(dist < 1.5 && b.id == ActorId.Wall)
                     {
                         farCount += 1;
-                    }    
-                }    
+                    }
+                }
 
                 if(closeCount == 1 && farCount == 0 && onEdge < 2)
                 {
@@ -989,7 +842,7 @@ function isGargoyleInRightPlace(a)
                 foundTwin = true;
             }
         }
-    }    
+    }
     return foundTwin;
 }
 
@@ -1070,7 +923,7 @@ function isCloseTo(a, actorId, dist)
 
 function isCorner(tx, ty)
 {
-    return  (tx == 0 && ty == 0) || 
+    return  (tx == 0 && ty == 0) ||
             (tx == 0 && ty == state.gridH - 1) ||
             (tx == state.gridW - 1 && ty == state.gridH - 1) ||
             (tx == state.gridW - 1 && ty == 0);
@@ -1939,7 +1792,7 @@ function updateBook(ctx, dt, worldR, HUDRect, clickedLeft)
         for(let line of lines)
         {
             fontUIBook.drawLine(ctx, line, 12, 20 + offy + top);
-            offy += 15;    
+            offy += 15;
         }
 
         let bookRightBody = new Rect();
@@ -1969,14 +1822,14 @@ function updateBook(ctx, dt, worldR, HUDRect, clickedLeft)
         // showCount(makeMinion9);
         // showCount(makeAngrySnake);
         // showCount(makeDeath9);
-        showCount(makeMineKing); 
+        showCount(makeMineKing);
 
         // showCount(makeLich); // 9
         showCount(makeRatKing);
         showCount(makeGazer);
         // showCount(makeSlimeKing);
         // showCount(makeLich);
-        
+
         showCount(makeWizard);
         showCount(makeMimic, stripXYToFrame(70, 375));
         // showCount(makeDragon);
@@ -2117,7 +1970,7 @@ function updateBook(ctx, dt, worldR, HUDRect, clickedLeft)
         {
             window.open("https://store.steampowered.com/app/1624540/Storyteller/", '_blank');
         }
-    
+
         drawFrame(ctx, stripBookFlap, 1, flapL.centerx() + 2, flapL.centery() - 2);
         if(clickedLeft && flapL.contains(mousex, mousey))
         {
@@ -2300,7 +2153,7 @@ function updatePlaying(ctx, dt)
         //             play("open_hover");
         //             clickedSomewhere = true;
         //         }
-        //     }        
+        //     }
         // }
 
         if(!clickedSomewhere)
@@ -2309,7 +2162,7 @@ function updatePlaying(ctx, dt)
             {
                 state.hoverMenu.resetTo(null);
                 play("close_hover");
-            }        
+            }
         }
     }
     else
@@ -2367,7 +2220,7 @@ function updatePlaying(ctx, dt)
                 menu.actor = marked;
                 play("open_hover");
             }
-        }        
+        }
     }
 
     // turn
@@ -2391,12 +2244,12 @@ function updatePlaying(ctx, dt)
                 startFXGnomeJumping(pushed.tx, pushed.ty);
             }
         }
-        
+
         if(pushed.id == ActorId.Crown)
         {
             state.endTime = Date.now();
             state.status = GameStatus.WinScreen;
-            
+
             // stamps
             let living = 0;
             for(let a of state.actors)
@@ -2451,11 +2304,11 @@ function updatePlaying(ctx, dt)
                         a.revealed = true;
                         startFXReveal(a.tx, a.ty);
                     }
-                }    
-                
+                }
+
                 makeEmptyAndReveal(pushed);
                 play(foundOne ? "spell" : "wrong");
-            }    
+            }
         }
         else
         if(pushed.id == ActorId.SpellRevealRats)
@@ -2471,11 +2324,11 @@ function updatePlaying(ctx, dt)
                         a.revealed = true;
                         startFXReveal(a.tx, a.ty);
                     }
-                }    
-                
+                }
+
                 makeEmptyAndReveal(pushed);
                 play(foundOne ? "spell" : "wrong");
-            }    
+            }
         }
         else
         if(pushed.id == ActorId.SpellDisarm)
@@ -2518,7 +2371,7 @@ function updatePlaying(ctx, dt)
                     state.minesDisarmed = true;
                     state.screenShakeTimer = 1;
                 }
-            }    
+            }
         }
         else
         if(pushed.id == ActorId.SpellMakeOrb)
@@ -2527,7 +2380,7 @@ function updatePlaying(ctx, dt)
             {
                 let candidates = state.actors.filter(a => !a.revealed);
                 shuffle(candidates);
-                
+
                 let pick = null;
                 for(let a of candidates)
                 {
@@ -2551,7 +2404,7 @@ function updatePlaying(ctx, dt)
                         let pick = toReveal[index++];
                         pick.revealed = true;
                         if(pick != pushed) startFXReveal(pick.tx, pick.ty);
-                    }    
+                    }
                 }
 
                 makeEmptyAndReveal(pushed);
@@ -2570,7 +2423,7 @@ function updatePlaying(ctx, dt)
                 //         let pick = toReveal[index++];
                 //         pick.revealed = true;
                 //         if(pick != pushed) startFXReveal(pick.tx, pick.ty);
-                //     }    
+                //     }
                 // }
                 // makeEmptyAndReveal(pushed);
                 // play(candidates.length > 0 ? "reveal" : "wrong");
@@ -2691,7 +2544,7 @@ function updatePlaying(ctx, dt)
                     pushed.defeated = true;
                     startTempHeroAnim(HERO_STABBING);
                 }
-    
+
                 if(pushed.id == ActorId.Rat)
                 {
                     state.killedRats += 1;
@@ -2819,7 +2672,7 @@ function updatePlaying(ctx, dt)
                 makeEmptyAndReveal(pushed);
             }
         }
-        
+
         if(!pushed.revealed)
         {
             // pushed.revealed = true;
@@ -2946,7 +2799,7 @@ function updatePlaying(ctx, dt)
             loadSettings();
             musicToRun = null;
         }
-        
+
         // cheats
         if(!RELEASE)
         {
@@ -2970,7 +2823,7 @@ function updatePlaying(ctx, dt)
                 state.status = GameStatus.Playing;
             }
         }
-    }        
+    }
 
     if(mustLevelup)
     {
@@ -2995,7 +2848,7 @@ function updatePlaying(ctx, dt)
         state.xpAnimations = [];
         startTempHeroAnim(HERO_LEVELING);
     }
-        
+
     // win/lose
     if(state.player.hp <= 0)
     {
@@ -3035,7 +2888,7 @@ function updatePlaying(ctx, dt)
             for(let i = state.player.hp; i < oldPlayerHP; i++)
             {
                 startHeartAnimation(i, HEART_DRAINING);
-            }    
+            }
         }
     }
 
@@ -3052,7 +2905,7 @@ function updatePlaying(ctx, dt)
             {
                 loopXPAnimation(i, XP_SPINNING);
             }
-        }            
+        }
     }
     else
     {
@@ -3081,8 +2934,8 @@ function updatePlaying(ctx, dt)
     {
         let stats = state.stats;
         debugLines.push("tiles "+(stats.total) + " empties "+stats.empties);
-        debugLines.push("monsterXP "+stats.totalXP + 
-                        " xpToMax "+stats.xpRequiredToMax+ 
+        debugLines.push("monsterXP "+stats.totalXP +
+                        " xpToMax "+stats.xpRequiredToMax+
                         " excessXP "+stats.excessXP);
         debugLines.push("monsterHP "+stats.totalMonsterHP+
                         " playerHP "+stats.totalHPOnMaxLevel);
@@ -3100,7 +2953,7 @@ function updatePlaying(ctx, dt)
         // }
     }
 
-    // { 
+    // {
     //     let xpStr = "";
     //     for(let i = 1; i < 19; i++)
     //     {
@@ -3129,7 +2982,7 @@ function updatePlaying(ctx, dt)
         startTempHeroAnim(state.player.hp == 1 ? HERO_ITS_A_ME_NAKED : HERO_ITS_A_ME);
         play("jorge", 1);
     }
-    
+
 
     let resetGame = false;
     if(keysJustPressed.includes('r')) resetGame = true;
@@ -3137,13 +2990,13 @@ function updatePlaying(ctx, dt)
     {
         resetGame = true;
     }
-    
+
     // update book movement
     if(state.player.maxHP > 15 && (state.player.maxHP > 16 || isLevelHalfHeart(state.player.level)))
     {
         state.bookLocationElapsed = Math.min(BOOK_MOVEMENT_DURATION, state.bookLocationElapsed + dt);
     }
-    
+
     let nomiconR = new Rect();
     nomiconR.w = 32;
     nomiconR.h = 32;
@@ -3176,7 +3029,7 @@ function updatePlaying(ctx, dt)
         ha.timer.update(dt);
     }
     state.xpAnimations = state.xpAnimations.filter(anim => !anim.timer.finished);
-    
+
     state.tempHeroAnim.update(dt);
     state.heroAnim.update(dt);
 
@@ -3206,7 +3059,7 @@ function updatePlaying(ctx, dt)
     else
     {
         startHeroAnim(HERO_IDLE);
-    }        
+    }
 
     // if(state.status == GameStatus.Dead)
     // {
@@ -3260,10 +3113,10 @@ function updatePlaying(ctx, dt)
                 if(state.wallLocations.find(w => w[0] == a.tx && w[1] == a.ty) != undefined) drawFrame(ctx, stripButtons, 43, centerx, centery);
                 if(state.chestsLocations.find(w => w[0] == a.tx && w[1] == a.ty) != undefined) drawFrame(ctx, stripButtons, 44, centerx, centery);
                 let neighbors = getAttackNumber(a.tx, a.ty);
-                
+
                 {
                     // if(getNeighborsWithDiagonals(a.tx, a.ty).find(b => b.id == ActorId.Gnome && !b.defeated) != undefined)
-                    
+
                     if(state.actors.find(b => b.id == ActorId.Gazer && !b.defeated && distance(b.tx, b.ty, a.tx, a.ty) <= 2) != undefined)
                     {
                         fontUINumbers.drawLine(ctx, "?", centerx, centery, FONT_CENTER|FONT_VCENTER);
@@ -3273,7 +3126,7 @@ function updatePlaying(ctx, dt)
                     {
                         fontUINumbers.drawLine(ctx, ""+neighbors, centerx, centery, FONT_CENTER|FONT_VCENTER);
                     }
-                }    
+                }
             }
             else
             if(a.isMonster)
@@ -3330,9 +3183,9 @@ function updatePlaying(ctx, dt)
                         // drawLineOutlineCentered(ctx, ""+a.contains, r.centerx() + 1, r.bottom() - 15, FONT_CENTER|FONT_BOTTOM);
                     }
                 }
-            }        
+            }
         }
-        
+
         if(a.mark > 0 && !a.revealed && !showEverything)
         {
             drawMarker(ctx, a.mark, centerx, centery);
@@ -3380,7 +3233,7 @@ function updatePlaying(ctx, dt)
             drawFrame(ctx, stripButtons, circleFrames[circleFrame], r.centerx(), r.centery());
         }
     }
-    
+
 
     // monsternomicon
     if(state.showingMonsternomicon)
@@ -3479,7 +3332,7 @@ function updatePlaying(ctx, dt)
 
     // book icon
     let bookSine = (Math.sin(timeElapsed*5)+1)*0.5 * 5 * (nomiconWasEverRead ? 0 : 1);
-    
+
     ctx.save();
     ctx.translate(Math.floor(nomiconR.centerx()), Math.floor(nomiconR.centery() + 3));
     ctx.scale(1,1);
@@ -3516,7 +3369,7 @@ function updatePlaying(ctx, dt)
         deathmap[ActorId.DragonEgg] = "this should never happen";
         let deathCause = deathmap[state.lastActorTypeClicked];
         if(state.lastActorNameClicked == "romeo") deathCause = "mauled by romeo";
-        else if(state.lastActorNameClicked == "juliet") deathCause = "mauled by juliet"; 
+        else if(state.lastActorNameClicked == "juliet") deathCause = "mauled by juliet";
 
         drawMultiline(ctx, fontHUD, [deathCause, "< restart"], levelupButtonR.right() + 5, HUDRect.centery(), FONT_VCENTER);
     }
@@ -3540,14 +3393,14 @@ function updatePlaying(ctx, dt)
     {
         state.crownAnimation.update(dt);
     }
-    
+
     ctx.restore();
 
     if(resetGame)
     {
         newGame();
         play("restart");
-    }    
+    }
 }
 
 function getGnomeFavoriteJumpTarget()
@@ -3570,11 +3423,6 @@ function getGnomeFavoriteJumpTarget()
     }
 
     return bestCandidate;
-}
-
-function isLevelHalfHeart(level)
-{
-    return level % 2 == 0;
 }
 
 function drawMarker(ctx, mark, centerx, centery)
@@ -3618,7 +3466,7 @@ function drawMarker(ctx, mark, centerx, centery)
         fontUIBlackDark.drawLine(ctx, text, x-1, y+1, centering);
         fontUIBlackDark.drawLine(ctx, text, x-1, y-1, centering);
         fontUIBlackDark.drawLine(ctx, text, x+1, y-1, centering);
-        fontUIYellow.drawLine(ctx, text, x, y, centering);    
+        fontUIYellow.drawLine(ctx, text, x, y, centering);
     }
 }
 
@@ -3630,7 +3478,7 @@ function updateWinscreen(ctx, dt)
     let r = new Rect();
     r.w = backBuffer.width;
     r.h = backBuffer.height;
-    
+
     ctx.fillStyle = "#000000";
     ctx.fillRect(r.x, r.y, r.w, r.h);
     let img = hasStamp(STAMP_CLEAR) ? imgJuliDragonAlternate : imgJuliDragon;
@@ -3723,75 +3571,75 @@ function onUpdate(phase, dt)
         imgJuliDragon = loadImage("juli_dragon.png");
         imgJuliDragonAlternate = loadImage("juli_dragon_alternate.png");
 
-        fontDebug = loadFont("font_small_white.png", 6, 6, 0, 6, 
+        fontDebug = loadFont("font_small_white.png", 6, 6, 0, 6,
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-+=:;,\"<>.?/\\[]_| ",
             false);
         fontDebug.spaceWidth = 5;
 
-        fontCredits = loadFont("font_small_gray.png", 6, 6, 0, 6, 
+        fontCredits = loadFont("font_small_gray.png", 6, 6, 0, 6,
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-+=:;,\"<>.?/\\[]_| ",
             false);
         fontCredits.spaceWidth = 5;
-    
-        fontUIBook = loadFont("font_small_book.png", 6, 6, 0, 6, 
+
+        fontUIBook = loadFont("font_small_book.png", 6, 6, 0, 6,
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-+=:;,\"<>.?/\\[]_| ",
             false);
         fontUIBook.spaceWidth = 5;
 
-        fontUINumbers = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontUINumbers = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0xd9d9d9);
         fontUINumbers.char_sep -= 2;
         fontUINumbers.spaceWidth = 5;
 
-        fontHUD = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontHUD = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0xd9d9d9);
         fontHUD.spaceWidth = 5;
         // fontHUD.char_sep -= 1;
 
-        fontWinscreen = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontWinscreen = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0x8a8a8a);
         // fontHUD.char_sep -= 1;
         fontWinscreen.spaceWidth = 5;
 
-        fontUIOrange = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontUIOrange = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0xffb700);
         fontUIOrange.char_sep -= 1;
         fontUIOrange.spaceWidth = 5;
 
-        fontUIGray = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontUIGray = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0x454545);
         fontUIGray.char_sep -= 1;
         fontUIGray.spaceWidth = 5;
 
-        fontUIYellow = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontUIYellow = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0xf7e26b);
         fontUIYellow.char_sep -= 1;
         fontUIYellow.spaceWidth = 5;
-    
-        fontUIBlackDark = loadFont("ingame_font.png", 8, 8, 0, 8, 
+
+        fontUIBlackDark = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0x000000);
         fontUIBlackDark.char_sep -= 1;
         fontUIBlackDark.spaceWidth = 5;
 
-        fontBook = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontBook = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0x4f2a07);
             fontBook.char_sep -= 0;
         fontBook.spaceWidth = 5;
 
-        fontUIRed = loadFont("ingame_font.png", 8, 8, 0, 8, 
+        fontUIRed = loadFont("ingame_font.png", 8, 8, 0, 8,
             "1234567890!#$%&*()-+=[]:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZ _",
             false, 0xff0d31);
         fontUIRed.char_sep -= 1;
         fontUIRed.spaceWidth = 5;
-    
+
         addSound("crack_egg", "egg.wav");
         addSound("pageflip", "pageflip.wav");
         addSound("open_hover", "open_hover.wav");
@@ -3851,7 +3699,7 @@ function onUpdate(phase, dt)
             {
                 sndEvents[eventId] = [];
             }
-            sndEvents[eventId].push(loadSoundStreamed("data/"+path));    
+            sndEvents[eventId].push(loadSoundStreamed("data/"+path));
         }
     }
     else if(phase == UpdatePhase.Loading)
