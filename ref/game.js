@@ -902,11 +902,6 @@ function checkLevel()
     }
 }
 
-function isEdge(tx, ty)
-{
-    return tx == 0 || ty == 0 || tx == state.gridW - 1 || ty == state.gridH - 1;
-}
-
 function isCloseTo(a, actorId, dist)
 {
     for(let b of state.actors)
@@ -917,19 +912,6 @@ function isCloseTo(a, actorId, dist)
         return true;
     }
     return false;
-}
-
-function isCorner(tx, ty)
-{
-    return  (tx == 0 && ty == 0) ||
-            (tx == 0 && ty == state.gridH - 1) ||
-            (tx == state.gridW - 1 && ty == state.gridH - 1) ||
-            (tx == state.gridW - 1 && ty == 0);
-}
-
-function isCloseToEdge(tx, ty)
-{
-    return tx <= 1 || ty <= 1 || tx >= state.gridW - 2 || ty >= state.gridH - 2;
 }
 
 function computeStats()
@@ -977,16 +959,6 @@ function drawLineOutlineCentered(ctx, text, x, y, centering)
     fontUIGray.drawLine(ctx, text, x-1, y-1, centering);
     fontUIGray.drawLine(ctx, text, x+1, y-1, centering);
     fontUIOrange.drawLine(ctx, text, x, y, centering);
-}
-
-function isEmpty(a)
-{
-    return a.id == ActorId.Empty;
-}
-
-function isInside(tx, ty)
-{
-    return tx >= 0 && ty >= 0 && tx < state.gridW && ty < state.gridH;
 }
 
 function getActorAt(tx ,ty)

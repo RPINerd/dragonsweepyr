@@ -925,23 +925,6 @@ function canvasFromImage(image)
     return ret;
 }
 
-function shuffle(array)
-{
-    let currentIndex = array.length;
-
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-
-      // Pick a remaining element...
-      let randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-}
-
 function rnd(start, end)
 {
     return Math.floor(Math.random() * (end - start) + start);
@@ -950,11 +933,6 @@ function rnd(start, end)
 function clamp01(v)
 {
     return Math.max(0, Math.min(1, v));
-}
-
-function randomColor()
-{
-    return Math.floor(Math.random() * 16777215).toString(16);
 }
 
 function pickRandomArrayElement(theArray)
