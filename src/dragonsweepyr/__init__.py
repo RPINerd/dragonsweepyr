@@ -1,4 +1,5 @@
 """Dragonsweep game package."""
-from dragonsweepyr.main import main
+from dragonsweepyr.game import main
 
 __all__ = ["main"]
+__version__ = "1.1.18"

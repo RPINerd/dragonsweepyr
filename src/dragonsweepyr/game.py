@@ -1,39 +1,24 @@
 """Main game application with a 13x10 grid."""
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-
 import pygame
 
+from dragonsweepyr.config import GameConfig
 from dragonsweepyr.logger import LOGGER, setup_logger
-
-
-@dataclass
-class GameConfig:
-
-    """Configuration for the game window and grid."""
-
-    grid_width: int = 13
-    grid_height: int = 10
-    tile_size: int = 48
-    fps: int = 60
-    window_title: str = "Dragonsweep"
-    background_color: tuple[int, int, int] = field(default_factory=lambda: (16, 16, 20))
-    grid_color: tuple[int, int, int] = field(default_factory=lambda: (100, 100, 100))
 
 
 class GameWindow:
 
     """Manages the pygame window and grid rendering."""
 
-    def __init__(self, config: GameConfig | None = None) -> None:
+    def __init__(self, config: GameConfig) -> None:
         """
         Initialize the game window.
 
         Args:
             config: GameConfig instance. Defaults to GameConfig() if None.
         """
-        self.config = config or GameConfig()
+        self.config = config
         self.screen: pygame.Surface | None = None
         self.clock: pygame.time.Clock | None = None
         self.running = False
@@ -43,8 +28,8 @@ class GameWindow:
         pygame.init()
         LOGGER.info("Pygame initialized")
 
-        window_width = self.config.grid_width * self.config.tile_size
-        window_height = self.config.grid_height * self.config.tile_size
+        window_width = self.config.grid_columns * self.config.tile_size
+        window_height = self.config.grid_rows * self.config.tile_size + self.config.ui_height
 
         self.screen = pygame.display.set_mode((window_width, window_height))
         pygame.display.set_caption(self.config.window_title)
@@ -52,7 +37,7 @@ class GameWindow:
 
         LOGGER.info(
             f"Game window created: {window_width}x{window_height} "
-            f"({self.config.grid_width}x{self.config.grid_height} grid)"
+            f"({self.config.grid_columns}x{self.config.grid_rows} grid)"
         )
 
     def _draw_grid(self) -> None:
@@ -63,23 +48,23 @@ class GameWindow:
         ts = self.config.tile_size
 
         # Draw vertical lines
-        for x in range(self.config.grid_width + 1):
+        for x in range(self.config.grid_columns + 1):
             x_pos = x * ts
             pygame.draw.line(
                 self.screen,
                 self.config.grid_color,
                 (x_pos, 0),
-                (x_pos, self.config.grid_height * ts),
+                (x_pos, self.config.grid_rows * ts),
             )
 
         # Draw horizontal lines
-        for y in range(self.config.grid_height + 1):
+        for y in range(self.config.grid_rows + 1):
             y_pos = y * ts
             pygame.draw.line(
                 self.screen,
                 self.config.grid_color,
                 (0, y_pos),
-                (self.config.grid_width * ts, y_pos),
+                (self.config.grid_columns * ts, y_pos),
             )
 
     def run(self) -> None:
@@ -94,7 +79,7 @@ class GameWindow:
                 self._render()
 
                 assert self.clock is not None
-                self.clock.tick(self.config.fps)
+                self.clock.tick(self.config.target_fps)
         finally:
             self.shutdown()
 
