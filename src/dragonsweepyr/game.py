@@ -1,9 +1,11 @@
 """Main game application with a 13x10 grid."""
 from __future__ import annotations
 
+import random
+
 import pygame
 
-from dragonsweepyr.config import GameConfig
+from dragonsweepyr.config import config
 from dragonsweepyr.logger import LOGGER, setup_logger
 
 
@@ -11,7 +13,7 @@ class GameWindow:
 
     """Manages the pygame window and grid rendering."""
 
-    def __init__(self, config: GameConfig) -> None:
+    def __init__(self) -> None:
         """
         Initialize the game window.
 
@@ -111,11 +113,33 @@ class GameWindow:
         LOGGER.info("Game closed")
 
 
+def show_loading_c64(surface: pygame.Surface) -> None:
+    """
+    Display C64-style loading screen with random scanlines.
+
+    Args:
+        surface: Pygame surface to draw on.
+    """
+    colors = [
+        "#000000", "#3e31a2", "#574200", "#8c3e34", "#545454",
+        "#8d47b3", "#905f25", "#7abfc7", "#808080", "#68a941",
+        "#bb776d", "#7abfc7", "#ababab", "#d0dc71", "#acea88",
+        "#ffffff"
+    ]
+    band_height = 6
+
+    band_count = int(config.window_height / band_height) + 1
+    off_y = 0
+
+    for _ in range(band_count):
+        pygame.draw.rect(surface, random.choice(colors), (0, 0 + off_y, config.window_width, band_height))
+        off_y += band_height
+
+
 def main() -> None:
     """Main function to run the game."""
     setup_logger()
-    config = GameConfig()
-    game_window = GameWindow(config)
+    game_window = GameWindow()
     game_window.run()
 
 
