@@ -1,0 +1,40 @@
+"""Constants for DragonSweepyr. Used in original JavaScript, but may be able to refactor/integrate for the python version."""
+
+TIME_TO_HOVER_MENU = 0.33
+BOOK_MOVEMENT_DURATION = 1
+MAX_HP = 19
+MAX_LEVEL_WITH_HP_UPGRADE = 25
+ORB_RADIUS = 2.1
+HEART_GROWING = [60, 61, 62, 63, 64, 65, 66][::-1]
+# HEART_GROWING = [160, 161, 162, 163, 164]
+HEART_DRAINING = [80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92]
+# HEART_NEW = [100, 101, 102, 103, 104, 105, 106].reverse()
+HEART_NEW = [160, 161, 162, 163, 164, 165, 166]
+HEART_HALF_GROWING = [153, 154, 155][::-1]
+XP_GROWING = [70, 71, 72, 73, 74][::-1]
+# XP_GROWING = [160, 161, 162, 163, 164]
+XP_SHRINKING = [70, 71, 72, 73, 74]
+XP_SPINNING = [120, 121, 122, 123, 124, 125, 126, 127, 128, 129]
+HERO_IDLE = [0]
+HERO_DEAD = [1]
+HERO_EMPOWERED = [10, 11]
+HERO_NAKED = [20, 21, 22]
+HERO_ITS_A_ME = [40, 41, 40]
+HERO_ITS_A_ME_NAKED = [90, 91, 92, 93, 94, 95, 96]
+HERO_LEVELING = [32, 33, 34, 35, 36, 37]
+HERO_STABBING = [50]
+HERO_CELEBRATING = [70, 71]
+ALL_MARKERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+STAMP_LOVERS = "stamp_lovers"
+STAMP_CLEAR = "stamp_clear"
+STAMP_EGG = "stamp_egg"
+STAMP_PACIFIST = "stamp_pacifist"
+STAMP_SPEC_IDS = [STAMP_LOVERS, STAMP_CLEAR, STAMP_EGG, STAMP_PACIFIST]
+STAMP_SPEC_FRAME = [5, 8, 1, 2]
+STAMP_DESC = [["lovers", "survive"], ["clear", "board"], ["future", "generation"], ["rat", "pacifist"]]
+
+FONT_TOP = 4
+FONT_CENTER = 1
+FONT_VCENTER = 2
+FONT_RIGHT = 8
+FONT_BOTTOM = 16

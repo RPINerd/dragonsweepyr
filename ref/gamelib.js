@@ -666,12 +666,6 @@ function arraysEqual(a1, a2)
     return true;
 }
 
-const FONT_TOP = 4;
-const FONT_CENTER = 1;
-const FONT_VCENTER = 2;
-const FONT_RIGHT = 8;
-const FONT_BOTTOM = 16;
-
 class Glyph
 {
     constructor()
@@ -959,58 +953,4 @@ function activatePlayerInteraction()
             // snd.currentTime = 0;
         }
     }
-}
-
-function tintImage(image, color)
-{
-    let r = color >> 16 & 0xff;
-    let g = color >> 8 & 0xff;
-    let b = color >> 0 & 0xff;
-    let ctx = get2DContext(image);
-    let imgData = ctx.getImageData(0, 0, image.width, image.height);
-    for(let i = 0; i < imgData.data.length; i += 4)
-    {
-
-        imgData.data[i + 0] = r;
-        imgData.data[i + 1] = g;
-        imgData.data[i + 2] = b;
-    }
-    ctx.putImageData(imgData, 0, 0);
-}
-
-function multiplyImageColor(image, colorMultiplier)
-{
-    let r = (colorMultiplier >> 16 & 0xff)/0xff;
-    let g = (colorMultiplier >> 8 & 0xff)/0xff;
-    let b = (colorMultiplier >> 0 & 0xff)/0xff;
-    let ctx = image.getContext("2d");
-    let imgData = ctx.getImageData(0, 0, image.width, image.height);
-    for(let i = 0; i < imgData.data.length; i += 4)
-    {
-        imgData.data[i + 0] *= r;
-        imgData.data[i + 1] *= g;
-        imgData.data[i + 2] *= b;
-    }
-    ctx.putImageData(imgData, 0, 0);
-}
-
-/** @param ctx {CanvasRenderingContext2D} */
-function showLoadingC64(ctx, rect)
-{
-    // c64 colors
-    let colorsWeb = ["#000000", "#FFFFFF", "#880000", "#AAFFEE", "#CC44CC", "#00CC55", "#0000AA", "#EEEE77", "#DD8855", "#664400", "#FF7777", "#333333", "#777777", "#AAFF66", "#0088FF", "BBBBBB"];
-    let colors = ["#000000", "#3e31a2", "#574200", "#8c3e34", "#545454", "#8d47b3", "#905f25", "#7c70da", "#808080", "#68a941", "#bb776d", "#7abfc7", "#ababab", "#d0dc71", "#acea88", "ffffff"];
-    let bandH = 6;
-    ctx.save();
-    ctx.imageSmoothingEnabled = false;
-
-    let bandCount = Math.floor(rect.h / bandH) + 1;
-    let offy = 0;
-    for(let i = 0; i < bandCount; i++)
-    {
-        ctx.fillStyle = pickRandomArrayElement(colors);
-        ctx.fillRect(rect.x, rect.y + offy, rect.w, bandH);
-        offy += bandH;
-    }
-    ctx.restore();
 }

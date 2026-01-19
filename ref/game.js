@@ -49,40 +49,6 @@ let collectedStamps = [];
 
 let sndEvents = {};
 
-const version = "v1.1.18";
-const TIME_TO_HOVER_MENU = 0.33;
-const BOOK_MOVEMENT_DURATION = 1;
-const MAX_HP = 19;
-const MAX_LEVEL_WITH_HP_UPGRADE = 25;
-const ORB_RADIUS = 2.1;
-const HEART_GROWING = [60, 61, 62, 63, 64, 65, 66].reverse();
-// const HEART_GROWING = [160, 161, 162, 163, 164];
-const HEART_DRAINING = [80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92];
-// const HEART_NEW = [100, 101, 102, 103, 104, 105, 106].reverse();
-const HEART_NEW = [160, 161, 162, 163, 164, 165, 166];
-const HEART_HALF_GROWING = [153, 154, 155].reverse();
-const XP_GROWING = [70, 71, 72, 73, 74].reverse();
-// const XP_GROWING = [160, 161, 162, 163, 164];
-const XP_SHRINKING = [70, 71, 72, 73, 74];
-const XP_SPINNING = [120, 121, 122, 123, 124, 125, 126, 127, 128, 129];
-const HERO_IDLE = [0];
-const HERO_DEAD = [1];
-const HERO_EMPOWERED = [10, 11];
-const HERO_NAKED = [20, 21, 22];
-const HERO_ITS_A_ME = [40, 41, 40];
-const HERO_ITS_A_ME_NAKED = [90, 91, 92, 93, 94, 95, 96];
-const HERO_LEVELING = [32, 33, 34, 35, 36, 37];
-const HERO_STABBING = [50];
-const HERO_CELEBRATING = [70, 71];
-const ALL_MARKERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-const STAMP_LOVERS = "stamp_lovers";
-const STAMP_CLEAR = "stamp_clear";
-const STAMP_EGG = "stamp_egg";
-const STAMP_PACIFIST = "stamp_pacifist";
-const STAMP_SPEC_IDS    = [STAMP_LOVERS, STAMP_CLEAR, STAMP_EGG, STAMP_PACIFIST];
-const STAMP_SPEC_FRAME  = [5, 8, 1, 2];
-const STAMP_DESC        = [["lovers", "survive"], ["clear","board"], ["future","generation"], ["rat","pacifist"]]
-
 
 let LEVELUP_FRAMES = [];
 for(let i = 0; i < 113;i++) LEVELUP_FRAMES.push(i);
