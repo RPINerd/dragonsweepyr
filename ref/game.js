@@ -703,25 +703,6 @@ function isGuardianInRightQuadrant(a)
     return false;
 }
 
-function isGargoyleInRightPlace(a)
-{
-    let foundTwin = false;
-    let neighborCount = 0;
-    for(let b of state.actors)
-    {
-        if(a === b) continue;
-        let dist = distance(a.tx, a.ty, b.tx, b.ty);
-        if(dist <= 1 && b.id == ActorId.Gargoyle)
-        {
-            neighborCount += 1;
-            if(b.name == a.name)
-            {
-                foundTwin = true;
-            }
-        }
-    }
-    return foundTwin;
-}
 
 function checkLevel()
 {
@@ -781,18 +762,6 @@ function checkLevel()
     }
 }
 
-function isCloseTo(a, actorId, dist)
-{
-    for(let b of state.actors)
-    {
-        if(b === a) continue;
-        if(b.id != actorId) continue;
-        if(distance(a.tx, a.ty, b.tx, b.ty) >= dist) continue;
-        return true;
-    }
-    return false;
-}
-
 function computeStats()
 {
     state.stats = new GameStats();
@@ -838,89 +807,6 @@ function drawLineOutlineCentered(ctx, text, x, y, centering)
     fontUIGray.drawLine(ctx, text, x-1, y-1, centering);
     fontUIGray.drawLine(ctx, text, x+1, y-1, centering);
     fontUIOrange.drawLine(ctx, text, x, y, centering);
-}
-
-function getActorAt(tx ,ty)
-{
-    return state.actors.find(a => a.tx == tx && a.ty == ty);
-}
-
-function revealIsolatedGroupsOfMines(actors)
-{
-    let taboo = [];
-    let reveals = 0;
-    for(let a of actors)
-    {
-        if(a.revealed) continue;
-        if(taboo.includes(a)) continue;
-        let group = flood(a);
-        let hasNonMine = group.find(c => c.id != ActorId.Mine) != undefined;
-        if(!hasNonMine)
-        {
-            for(let c of group)
-            {
-                if(!c.revealed)
-                {
-                    reveals++;
-                    c.revealed = true;
-                    startFXReveal(c.tx, c.ty);
-                }
-            }
-        }
-    }
-
-    if(reveals > 0)
-    {
-        play("reveal");
-    }
-
-    function flood(pivotActor)
-    {
-        let ret = [pivotActor];
-        for(let b of getNeighborsWithDiagonals(pivotActor.tx, pivotActor.ty))
-        {
-            if(isEmpty(b)) continue;
-            if(taboo.includes(b)) continue;
-            taboo.push(b);
-            ret = ret.concat(flood(b));
-        }
-        return ret;
-    }
-}
-
-function floodCross(pivotActor, filterFn)
-{
-    return internalFlood(pivotActor, filterFn, []);
-
-    function internalFlood(pivotActor, filterFn, taboo)
-    {
-        let ret = [];
-        if(filterFn(pivotActor))
-        {
-            ret.push(pivotActor);
-            // taboo.push(pivotActor);
-            for(let b of getNeighborsCross(pivotActor.tx, pivotActor.ty))
-            {
-                if(taboo.includes(b)) continue;
-                taboo.push(b);
-                ret = ret.concat(internalFlood(b, filterFn, taboo));
-            }
-        }
-        return ret;
-    }
-}
-
-function recursiveReveal(a, tabooArray = [])
-{
-    // note: I don't reveal all empty tiles because it feels too automated and boring
-    // let group = floodCross(a, b => b === a || (b.id == ActorId.Empty && !b.revealed));
-
-    // let group = floodCross(a, b => b === a || (b.id == ActorId.Empty && !b.revealed && getAttackNumber(b.tx, b.ty) == 0));
-    // for(let g of group)
-    // {
-    //     g.revealed = true;
-    // }
-    a.revealed = true;
 }
 
 function getNeighborsWithDiagonals(tx, ty)
@@ -993,12 +879,6 @@ function startHeroAnim(frames)
     if(state.heroAnim.frames != null && arraysEqual(state.heroAnim.frames, frames)) return;
     state.heroAnim.loop(frames, 3);
 }
-
-// function startFXExposeMinion(a)
-// {
-//     let rect = getRectForTile(a.tx, a.ty);
-//     startFX([27, 28, 29, 30], rect.centerx(), rect.centery());
-// }
 
 function startFXChangeNumber(tx, ty)
 {
@@ -1091,7 +971,7 @@ function play(sndEventId, volume = 0)
 
 function makeEmptyAndReveal(a)
 {
-    recursiveReveal(a);
+    a.revealed = true;
     makeEmpty(a);
 }
 
@@ -1872,7 +1752,7 @@ function updatePlaying(ctx, dt)
                     pushed.wallHP--;
                     if(pushed.wallHP == 0)
                     {
-                        recursiveReveal(pushed);
+                        pushed.revealed = true;
                         if(pushed.contains != null) pushed.contains(pushed); // add whatever is inside the wall
                         else makeEmpty(pushed);
                         play("wall_down");
@@ -2081,7 +1961,7 @@ function updatePlaying(ctx, dt)
         if(!pushed.revealed)
         {
             // pushed.revealed = true;
-            if(isEmpty(pushed)) recursiveReveal(pushed);
+            if(isEmpty(pushed)) pushed.revealed = true;
             else pushed.revealed = true;
             play("uncover");
         }
@@ -2177,9 +2057,6 @@ function updatePlaying(ctx, dt)
         //     }
         // }
     }
-
-    // TODO: slow to do all the time
-    // revealIsolatedGroupsOfMines(activeActors);
 
     let heroR = new Rect();
     heroR.w = 32;

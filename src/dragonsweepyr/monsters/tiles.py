@@ -1,6 +1,8 @@
 """Base class for tile entities and decorations"""
 from dataclasses import dataclass
 
+from dragonsweepyr.utils import distance
+
 
 @dataclass
 class TileID:
@@ -75,6 +77,21 @@ class BoardTile:
     def is_empty(self) -> bool:
         """Check if the tile is empty."""
         return self.id == TileID.Empty
+
+    def is_near(self, other: "BoardTile", dist: int = 1) -> bool:
+        """
+        Check if this tile is near to another tile.
+
+        Javascript Source: isCloseTo(a, actorId, dist)
+
+        Args:
+            other (BoardTile): The other tile to check against.
+            dist (int): The maximum distance to consider as "near".
+
+        Returns:
+            bool: True if the tiles are near, False otherwise.
+        """
+        return distance(self.tx, self.ty, other.tx, other.ty) <= dist
 
     def on_reveal(self) -> None:
         """Called when the tile is revealed."""
