@@ -350,11 +350,6 @@ function generateDungeon()
         checkLevel();
     }
 
-    function beginLayer()
-    {
-        currentLayer = new RandomGeneratorLayer();
-    }
-
     function endLayer()
     {
         let layerActors = [];
@@ -816,21 +811,6 @@ function getNeighborsWithDiagonals(tx, ty)
     {
         if(a.tx == tx && a.ty == ty) continue;
         if(distance(a.tx, a.ty, tx, ty) < 2)
-        {
-            ret.push(a);
-        }
-    }
-    return ret;
-}
-
-function getNeighborsCross(tx, ty)
-{
-    let ret = [];
-    for(let a of state.actors)
-    {
-        if(a.tx == tx && a.ty == ty) continue;
-        let dist = distance(a.tx, a.ty, tx, ty);
-        if(dist == 1)
         {
             ret.push(a);
         }
@@ -2035,27 +2015,6 @@ function updatePlaying(ctx, dt)
         {
             a.stripFrame = stripXYToFrame(70, 375);
         }
-        // else
-        // if(a.id == ActorId.Lich && !a.defeated)
-        // {
-        //     // lich has extra health given by skeletons
-        //     a.monsterLevel = makeLich(new Actor()).monsterLevel;
-        //     for(let b of state.actors)
-        //     {
-        //         if(b.id == ActorId.Skeleton && !b.defeated)
-        //         {
-        //             a.monsterLevel += 1;
-        //         }
-        //     }
-        // }
-        // if(a.isTrap && !a.trapDisarmed)
-        // {
-        //     let neighs = getNeighborsCross(a.tx, a.ty);
-        //     if(neighs.find(b => !b.revealed) == undefined)
-        //     {
-        //         a.revealed = true;
-        //     }
-        // }
     }
 
     let heroR = new Rect();
@@ -2303,7 +2262,6 @@ function updatePlaying(ctx, dt)
         if(icon == 0 && a.xp > 0 && a.revealed && (!a.isMonster || a.defeated)) icon = 2;
         // do not lower tile with killer monster
         if(state.player.hp == 0 && state.lastTileClicked == a) icon = 0;
-        // if(a.id == ActorId.Dragon && a.defeated) icon = 1;
         drawFrame(ctx, stripButtons, icon, centerx, centery);
         if(icon != 1 && icon != 2) drawFrame(ctx, stripButtons, state.buttonFrames[a.tx + a.ty*state.gridW], centerx, centery);
         if(a.revealed || showEverything)
@@ -2315,8 +2273,6 @@ function updatePlaying(ctx, dt)
                 let neighbors = getAttackNumber(a.tx, a.ty);
 
                 {
-                    // if(getNeighborsWithDiagonals(a.tx, a.ty).find(b => b.id == ActorId.Gnome && !b.defeated) != undefined)
-
                     if(state.actors.find(b => b.id == ActorId.Gazer && !b.defeated && distance(b.tx, b.ty, a.tx, a.ty) <= 2) != undefined)
                     {
                         fontUINumbers.drawLine(ctx, "?", centerx, centery, FONT_CENTER|FONT_VCENTER);

@@ -125,5 +125,10 @@ def generate_dungeon() -> Dungeon:
     return dungeon
 
 def post_process_layer() -> None:
-    """Perform any post-processing needed on the dungeon layer."""
+    """
+    Perform any post-processing needed on the dungeon layer.
+
+    Javascript Source: endLayer()
+    """
+
     pass
