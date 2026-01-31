@@ -9,6 +9,7 @@ class Chest(BoardTile):
     """Chest item."""
 
     def __init__(self, contains: BoardTile | None = None) -> None:
+        """"""
         super().__init__()
         self.id = TileID.Chest
         self.stripFrame = res_to_frame(70, 360)
@@ -20,6 +21,7 @@ class Crown(BoardTile):
     """Crown item."""
 
     def __init__(self) -> None:
+        """"""
         super().__init__()
         self.id = TileID.Crown
         self.stripFrame = 142
@@ -30,6 +32,7 @@ class Medikit(BoardTile):
     """Medikit item."""
 
     def __init__(self) -> None:
+        """"""
         super().__init__()
         self.id = TileID.Medikit
         self.stripFrame = 22
@@ -40,6 +43,7 @@ class Orb(BoardTile):
     """Orb item."""
 
     def __init__(self) -> None:
+        """"""
         super().__init__()
         self.id = TileID.Orb
         self.stripFrame = 23
@@ -50,6 +54,7 @@ class Treasure(BoardTile):
     """Treasure item."""
 
     def __init__(self, xp: int = 1) -> None:
+        """"""
         super().__init__()
         self.id = TileID.Treasure
         self.xp = xp

@@ -21,6 +21,7 @@ class Player:
     hp_cap: ClassVar[int] = 19
 
     def __init__(self) -> None:
+        """"""
         self.max_hp = 4
         self.current_hp = self.max_hp
         self.xp = 0
