@@ -5,6 +5,8 @@ from dragonsweepyr.config import config
 from dragonsweepyr.monsters.tiles import BoardTile
 from random import randint
 
+from dragonsweepyr.utils import distance
+
 
 class Board:
 
@@ -52,6 +54,29 @@ class Board:
                 if tile.id == tile_id:
                     return tile
         return None
+
+    def get_tiles_in_radius(self, center_x: int, center_y: int, radius: int | float) -> list[BoardTile]:
+        """
+        Retrieve all tiles within a certain radius from a center point.
+
+        Ingnores the center (self) tile.
+
+        Args:
+            center_x: The x-coordinate (column) of the center point.
+            center_y: The y-coordinate (row) of the center point.
+            radius: The radius within which to find tiles.
+
+        Returns:
+            A list of BoardTile instances within the specified radius.
+        """
+        found_tiles: list[BoardTile] = []
+        for row in self.tiles:
+            for tile in row:
+                if tile.tx == center_x and tile.ty == center_y:
+                    continue  # Skip the center tile itself
+                if distance(tile.tx, tile.ty, center_x, center_y) <= radius:
+                    found_tiles.append(tile)
+        return found_tiles
 
     def get_tile_list(self, tile_id: int) -> list[BoardTile]:
         """Retrieve all tiles with the specified ID.
