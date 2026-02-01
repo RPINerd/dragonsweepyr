@@ -197,6 +197,62 @@ def post_process_layer() -> None:
     Perform any post-processing needed on the dungeon layer.
 
     Javascript Source: endLayer()
-    """
 
-    pass
+    let layerActors = [];
+        for(let layerActorToAdd of currentLayer.actors)
+        {
+            let availableActor = state.actors.find(a => isEmpty(a));
+            if(availableActor == undefined) continue;
+            availableActor.copyFrom(layerActorToAdd);
+            layerActors.push(availableActor);
+        }
+
+        let bestHappiness = happiness();
+        for(let k = 0; k < 4; k++)
+        {
+            shuffle(state.actors);
+            for(let i = 0; i < layerActors.length; i++)
+            {
+                let a = layerActors[i];
+                let happiestReplacement = null;
+                for(let j = 0; j < state.actors.length; j++)
+                {
+                    let b = state.actors[j];
+                    if(b.fixed || a === b) continue;
+                    swapPlaces(a, b);
+                    let newHappiness = happiness();
+                    swapPlaces(a, b);
+                    if(newHappiness >= bestHappiness)
+                    {
+                        bestHappiness = newHappiness;
+                        happiestReplacement = b;
+                    }
+                }
+
+                if(happiestReplacement != null)
+                {
+                    swapPlaces(a, happiestReplacement);
+                }
+            }
+        }
+
+        for(let a of layerActors)
+        {
+            a.fixed = true;
+        }
+    """
+    raise NotImplementedError("Dungeon layer post-processing not yet implemented.")
+
+
+def swap_tiles(a: BoardTile, b: BoardTile) -> None:
+    """
+    Swap the positions of two tiles.
+
+    Javascript Source: swapPlaces(a, b)
+
+    Args:
+        a: The first tile to swap.
+        b: The second tile to swap.
+    """
+    a.tx, b.tx = b.tx, a.tx
+    a.ty, b.ty = b.ty, a.ty

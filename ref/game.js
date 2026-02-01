@@ -350,52 +350,6 @@ function generateDungeon()
         checkLevel();
     }
 
-    function endLayer()
-    {
-        let layerActors = [];
-        for(let layerActorToAdd of currentLayer.actors)
-        {
-            let availableActor = state.actors.find(a => isEmpty(a));
-            if(availableActor == undefined) continue;
-            availableActor.copyFrom(layerActorToAdd);
-            layerActors.push(availableActor);
-        }
-
-        let bestHappiness = happiness();
-        for(let k = 0; k < 4; k++)
-        {
-            shuffle(state.actors);
-            for(let i = 0; i < layerActors.length; i++)
-            {
-                let a = layerActors[i];
-                let happiestReplacement = null;
-                for(let j = 0; j < state.actors.length; j++)
-                {
-                    let b = state.actors[j];
-                    if(b.fixed || a === b) continue;
-                    swapPlaces(a, b);
-                    let newHappiness = happiness();
-                    swapPlaces(a, b);
-                    if(newHappiness >= bestHappiness)
-                    {
-                        bestHappiness = newHappiness;
-                        happiestReplacement = b;
-                    }
-                }
-
-                if(happiestReplacement != null)
-                {
-                    swapPlaces(a, happiestReplacement);
-                }
-            }
-        }
-
-        for(let a of layerActors)
-        {
-            a.fixed = true;
-        }
-    }
-
     function add(amount, fn)
     {
         let ret = [];
@@ -407,16 +361,6 @@ function generateDungeon()
             ret.push(a);
         }
         return ret;
-    }
-
-    function swapPlaces(a, b)
-    {
-        let tempx = a.tx;
-        let tempy = a.ty;
-        a.tx = b.tx;
-        a.ty = b.ty;
-        b.tx = tempx;
-        b.ty = tempy;
     }
 
     function happiness()
@@ -662,40 +606,7 @@ function generateDungeon()
         }
         return ret;
 
-        function countNearMeWithSameId(a, minDistance)
-        {
-            let count = 0;
-            for(let b of state.actors)
-            {
-                if(a.id == b.id && b !== a && distance(a.tx, a.ty, b.tx, b.ty) < minDistance)
-                {
-                    count += 1;
-                }
-            }
-            return count;
-        }
     }
-}
-
-function isGuardianInRightQuadrant(a)
-{
-    if(a.name == "guard1")
-    {
-        if(a.tx < 6 && a.ty < 4) return true;
-    }
-    else if(a.name == "guard2")
-    {
-        if(a.tx > 6 && a.ty < 4) return true;
-    }
-    else if(a.name == "guard3")
-    {
-        if(a.tx > 6 && a.ty > 4) return true;
-    }
-    else if(a.name == "guard4")
-    {
-        if(a.tx < 6 && a.ty > 4) return true;
-    }
-    return false;
 }
 
 
