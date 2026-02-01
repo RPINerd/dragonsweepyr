@@ -1,7 +1,7 @@
 """BoardTile child classes for items"""
 
 from dragonsweepyr.monsters.tiles import BoardTile, TileID
-from dragonsweepyr.utils import res_to_frame
+from dragonsweepyr.utils import is_close_to_edge, res_to_frame
 
 
 class Chest(BoardTile):
@@ -15,6 +15,10 @@ class Chest(BoardTile):
         self.stripFrame = res_to_frame(70, 360)
         self.contains = contains or Treasure(5)
 
+    def satisfaction(self) -> int:
+        """Chests have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Crown(BoardTile):
 
@@ -25,6 +29,10 @@ class Crown(BoardTile):
         super().__init__()
         self.id = TileID.Crown
         self.stripFrame = 142
+
+    def satisfaction(self) -> int:
+        """Crowns have no locational satisfaction effect."""
+        return super().satisfaction()
 
 
 class Medikit(BoardTile):
@@ -37,6 +45,10 @@ class Medikit(BoardTile):
         self.id = TileID.Medikit
         self.stripFrame = 22
 
+    def satisfaction(self) -> int:
+        """Medikits have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Orb(BoardTile):
 
@@ -47,6 +59,12 @@ class Orb(BoardTile):
         super().__init__()
         self.id = TileID.Orb
         self.stripFrame = 23
+
+    def satisfaction(self) -> int:
+        """Orb cannot be placed near an edge."""
+        if is_close_to_edge(self.tx, self.ty):
+            return -10000
+        return 0
 
 
 class Treasure(BoardTile):
@@ -64,3 +82,7 @@ class Treasure(BoardTile):
             self.stripFrame = 31
         else:  # xp == 5
             self.stripFrame = 24
+
+    def satisfaction(self) -> int:
+        """Treasure has no locational satisfaction effect."""
+        return super().satisfaction()

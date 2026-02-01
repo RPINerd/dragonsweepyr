@@ -1,6 +1,6 @@
 """BoardTile child classes for creatures"""
 from dragonsweepyr.monsters.tiles import BoardTile, TileID
-from dragonsweepyr.utils import res_to_frame
+from dragonsweepyr.utils import is_center, is_corner, is_edge, res_to_frame
 
 
 class Bat(BoardTile):
@@ -16,6 +16,10 @@ class Bat(BoardTile):
         self.monsterLevel = 2
         self.xp = 2
 
+    def satisfaction(self) -> int:
+        """Bats have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class BigSlime(BoardTile):
 
@@ -29,6 +33,10 @@ class BigSlime(BoardTile):
         self.isMonster = True
         self.monsterLevel = 8
         self.xp = 8
+
+    def satisfaction(self) -> int:
+        """Big Slimes have no locational satisfaction effect."""
+        return super().satisfaction()
 
 
 class DarkKnight(BoardTile):
@@ -47,6 +55,10 @@ class DarkKnight(BoardTile):
         else:  # level == 7
             self.stripFrame = res_to_frame(200, 100)
 
+    def satisfaction(self) -> int:
+        """Dark Knights have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Death(BoardTile):
 
@@ -60,6 +72,10 @@ class Death(BoardTile):
         self.isMonster = True
         self.monsterLevel = 9
         self.xp = 9
+
+    def satisfaction(self) -> int:
+        """Deaths have no locational satisfaction effect."""
+        return super().satisfaction()
 
 
 class Dragon(BoardTile):
@@ -76,6 +92,12 @@ class Dragon(BoardTile):
         self.monsterLevel = 13
         self.xp = 13
 
+    def satisfaction(self) -> int:
+        """Dragons should be in a central region of the board."""
+        if is_center(self.tx, self.ty):
+            return 10000
+        return 0
+
 
 class DragonEgg(BoardTile):
 
@@ -91,6 +113,10 @@ class DragonEgg(BoardTile):
         self.monsterLevel = 0
         self.xp = 3
 
+    def satisfaction(self) -> int:
+        """Dragon egg has no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Eye(BoardTile):
 
@@ -104,6 +130,10 @@ class Eye(BoardTile):
         self.isMonster = True
         self.monsterLevel = 5
         self.xp = 5
+
+    def satisfaction(self) -> int:
+        """Eyes have no locational satisfaction effect."""
+        return super().satisfaction()
 
 
 class Fidel(BoardTile):
@@ -119,6 +149,12 @@ class Fidel(BoardTile):
         self.monsterLevel = 0
         self.xp = 0
 
+    def satisfaction(self) -> int:
+        """Fidel prefers corners."""
+        if is_corner(self.tx, self.ty):
+            return 9000
+        return 0
+
 
 class Gargoyle(BoardTile):
 
@@ -133,7 +169,11 @@ class Gargoyle(BoardTile):
         self.monsterLevel = 4
         self.xp = 4
 
-    def has_twin(self, ) -> bool:
+    def satisfaction(self) -> int:
+        """Gargoyles have no locational satisfaction effect."""
+        return super().satisfaction()
+
+    def has_twin(self, twin: BoardTile) -> bool:
         """
         Check if the gargoyle is in its correct location.
 
@@ -178,6 +218,10 @@ class Gazer(BoardTile):
         self.monsterLevel = 5
         self.xp = 5
 
+    def satisfaction(self) -> int:
+        """Gazers have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Giant(BoardTile):
 
@@ -191,6 +235,10 @@ class Giant(BoardTile):
         self.isMonster = True
         self.monsterLevel = 9
         self.xp = 9
+
+    def satisfaction(self) -> int:
+        """Giants have no locational satisfaction effect."""
+        return super().satisfaction()
 
 
 class Gnome(BoardTile):
@@ -206,6 +254,10 @@ class Gnome(BoardTile):
         self.monsterLevel = 0
         self.xp = 9
 
+    def satisfaction(self) -> int:
+        """Gnomes have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Guard(BoardTile):
 
@@ -219,6 +271,25 @@ class Guard(BoardTile):
         self.isMonster = True
         self.monsterLevel = 7
         self.xp = 7
+
+    def satisfaction(self) -> int:
+        """Guards should be in respective quadrants based on their name."""
+        match self.name:
+            case "guard1":
+                if self.tx < 6 and self.ty < 4:
+                    return 2500
+            case "guard2":
+                if self.tx > 6 and self.ty < 4:
+                    return 2500
+            case "guard3":
+                if self.tx > 6 and self.ty > 4:
+                    return 2500
+            case "guard4":
+                if self.tx < 6 and self.ty > 4:
+                    return 2500
+            case _:
+                raise ValueError(f"Unknown guard name: {self.name}")
+        return 0
 
 
 class Mimic(BoardTile):
@@ -235,6 +306,10 @@ class Mimic(BoardTile):
         self.xp = 11
         self.mimicMimicking = True
 
+    def satisfaction(self) -> int:
+        """Mimics have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Mine(BoardTile):
 
@@ -250,6 +325,10 @@ class Mine(BoardTile):
         self.monsterLevel = 100
         self.xp = 3
 
+    def satisfaction(self) -> int:
+        """Mines have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class MineKing(BoardTile):
 
@@ -263,6 +342,12 @@ class MineKing(BoardTile):
         self.isMonster = True
         self.monsterLevel = 10
         self.xp = 10
+
+    def satisfaction(self) -> int:
+        """The Mine King must be in a corner."""
+        if is_corner(self.tx, self.ty):
+            return 10000
+        return 0
 
 
 class Minotaur(BoardTile):
@@ -278,6 +363,10 @@ class Minotaur(BoardTile):
         self.monsterLevel = 6
         self.xp = 6
 
+    def satisfaction(self) -> int:
+        """Minotaurs have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Rat(BoardTile):
 
@@ -291,6 +380,10 @@ class Rat(BoardTile):
         self.isMonster = True
         self.monsterLevel = 1
         self.xp = 1
+
+    def satisfaction(self) -> int:
+        """Rats have no locational satisfaction effect."""
+        return super().satisfaction()
 
 
 class RatKing(BoardTile):
@@ -306,6 +399,10 @@ class RatKing(BoardTile):
         self.monsterLevel = 5
         self.xp = 5
 
+    def satisfaction(self) -> int:
+        """Rat Kings have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Skeleton(BoardTile):
 
@@ -319,6 +416,10 @@ class Skeleton(BoardTile):
         self.isMonster = True
         self.monsterLevel = 3
         self.xp = 3
+
+    def satisfaction(self) -> int:
+        """Skeletons have no locational satisfaction effect."""
+        return super().satisfaction()
 
 
 class Slime(BoardTile):
@@ -334,6 +435,10 @@ class Slime(BoardTile):
         self.monsterLevel = 5
         self.xp = 5
 
+    def satisfaction(self) -> int:
+        """Slimes have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Snake(BoardTile):
 
@@ -348,6 +453,10 @@ class Snake(BoardTile):
         self.monsterLevel = 7
         self.xp = 7
 
+    def satisfaction(self) -> int:
+        """Snakes have no locational satisfaction effect."""
+        return super().satisfaction()
+
 
 class Wizard(BoardTile):
 
@@ -361,3 +470,9 @@ class Wizard(BoardTile):
         self.isMonster = True
         self.monsterLevel = 1
         self.xp = 1
+
+    def satisfaction(self) -> int:
+        """Wizards should be along and edge but not in a corner."""
+        if is_edge(self.tx, self.ty) and not is_corner(self.tx, self.ty):
+            return 10000
+        return 0

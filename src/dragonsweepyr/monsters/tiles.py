@@ -93,6 +93,15 @@ class BoardTile:
         """
         return distance(self.tx, self.ty, other.tx, other.ty) <= dist
 
+    def satisfaction(self) -> int:
+        """
+        Calculate the satisfaction value of the tile.
+
+        Returns:
+            An integer representing the satisfaction value.
+        """
+        return 0
+
     def on_reveal(self) -> None:
         """Called when the tile is revealed."""
         pass
@@ -119,3 +128,27 @@ class Wall(BoardTile):
         super().__init__()
         self.id = TileID.Wall
         self.stripFrame = 11
+
+    def satisfaction(self) -> int:
+        """
+        Currently walls do not contribute to satisfaction.
+
+        Source code does have commented out logic to discourage walls from being along the board edges.
+        """
+        # if is_edge(self.tx, self.ty):
+        #     return -1000
+        return super().satisfaction()
+
+
+forbidden_reveals = {
+    TileID.Dragon,
+    TileID.Gazer,
+    TileID.Chest,
+    TileID.SpellMakeOrb,
+    TileID.RatKing,
+    TileID.Mine,
+    TileID.Fidel,
+    TileID.DragonEgg,
+    TileID.BigSlime,
+    TileID.Mimic,
+}
