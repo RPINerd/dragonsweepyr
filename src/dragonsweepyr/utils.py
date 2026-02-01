@@ -15,6 +15,23 @@ def dist_squared(x1: float, y1: float, x2: float, y2: float) -> float:
     return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)
 
 
+def is_center(tx: int, ty: int) -> bool:
+    """
+    Validates if the given tile coordinates are in the center region of the grid.
+
+    JavaScript Source: isCenter(tx, ty)
+
+    Args:
+        tx: Tile x-coordinate
+        ty: Tile y-coordinate
+    Returns:
+        True if the tile is in the center region, False otherwise.
+    """
+    center_x = config.grid_columns // 2
+    center_y = config.grid_rows // 2
+    return (center_x == tx and ty == center_y)
+
+
 def is_close_to_edge(tx: int, ty: int) -> bool:
     """
     Validates if the given tile coordinates are close to the edge of the grid.

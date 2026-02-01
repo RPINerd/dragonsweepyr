@@ -9,42 +9,42 @@ class TileID:
 
     """Dataset of possible tile IDs."""
 
-    NaN: str = "none"
-    Empty: str = "empty"
-    Orb: str = "orb"
-    SpellMakeOrb: str = "spell_reveal"
-    Mine: str = "mine"
-    MineKing: str = "mine king"
-    Dragon: str = "dragon"
-    Wall: str = "wall"
-    Mimic: str = "mimic"
-    Medikit: str = "medikit"
-    RatKing: str = "rat king"
-    Rat: str = "rat"
-    Slime: str = "slime"
-    Gargoyle: str = "gargoyle"
-    Minotaur: str = "minotaur"
-    Chest: str = "chest"
-    Skeleton: str = "skeleton"
-    Treasure: str = "treasure"
-    Snake: str = "snake"
-    Giant: str = "giant"
-    Decoration: str = "decoration"
-    Wizard: str = "wizard"
-    Gazer: str = "gazer"
-    SpellDisarm: str = "spell_disarm"
-    BigSlime: str = "big slime"
-    SpellRevealRats: str = "spell_reveal_rats"
-    SpellRevealSlimes: str = "spell_reveal_slimes"
-    Gnome: str = "gnome"
-    Bat: str = "bat"
-    Guard: str = "guardian"
-    Crown: str = "crown"
-    Fidel: str = "fidel"
-    DragonEgg: str = "dragon_egg"
-    Death: str = "death"
-    DarkKnight: str = "dark knight"
-    Eye: str = "eye"
+    NaN: int = -1
+    Empty: int = 0
+    Orb: int = 1
+    SpellMakeOrb: int = 2
+    Mine: int = 3
+    MineKing: int = 4
+    Dragon: int = 5
+    Wall: int = 6
+    Mimic: int = 7
+    Medikit: int = 8
+    RatKing: int = 9
+    Rat: int = 10
+    Slime: int = 11
+    Gargoyle: int = 12
+    Minotaur: int = 13
+    Chest: int = 14
+    Skeleton: int = 15
+    Treasure: int = 16
+    Snake: int = 17
+    Giant: int = 18
+    Decoration: int = 19
+    Wizard: int = 20
+    Gazer: int = 21
+    SpellDisarm: int = 22
+    BigSlime: int = 23
+    SpellRevealRats: int = 24
+    SpellRevealSlimes: int = 25
+    Gnome: int = 26
+    Bat: int = 27
+    Guard: int = 28
+    Crown: int = 29
+    Fidel: int = 30
+    DragonEgg: int = 31
+    Death: int = 32
+    DarkKnight: int = 33
+    Eye: int = 34
 
 
 class BoardTile:
@@ -78,7 +78,7 @@ class BoardTile:
         """Check if the tile is empty."""
         return self.id == TileID.Empty
 
-    def is_near(self, other: "BoardTile", dist: int = 1) -> bool:
+    def is_near(self, other: "BoardTile", dist: int | float = 1) -> bool:
         """
         Check if this tile is near to another tile.
 
@@ -103,6 +103,7 @@ class Decoration(BoardTile):
     """Decoration tile."""
 
     def __init__(self, strip=None, frame: int = 0) -> None:
+        """"""
         super().__init__()
         self.id = TileID.Decoration
         self.strip = strip
@@ -114,6 +115,7 @@ class Wall(BoardTile):
     """Wall tile."""
 
     def __init__(self) -> None:
+        """"""
         super().__init__()
         self.id = TileID.Wall
         self.stripFrame = 11

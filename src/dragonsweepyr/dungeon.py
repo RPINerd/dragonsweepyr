@@ -2,7 +2,7 @@
 
 
 from dragonsweepyr.config import config
-from dragonsweepyr.dragons import BoardTile
+from dragonsweepyr.monsters.tiles import BoardTile
 from random import randint
 
 
@@ -24,7 +24,7 @@ class Board:
         ]
         self.populated: set[tuple[int, int]] = set()
 
-    def get_tile(self, x: int, y: int) -> BoardTile | None:
+    def get_tile_at(self, x: int, y: int) -> BoardTile | None:
         """Retrieve a tile at the specified coordinates.
 
         Args:
@@ -37,6 +37,37 @@ class Board:
         if 0 <= x < self.width and 0 <= y < self.height:
             return self.tiles[y][x]
         return None
+
+    def get_tile(self, tile_id: int) -> BoardTile | None:
+        """Retrieve the first tile with the specified ID.
+
+        Args:
+            tile_id: The ID of the tile to find.
+
+        Returns:
+            The first BoardTile with the specified ID, or None if not found.
+        """
+        for row in self.tiles:
+            for tile in row:
+                if tile.id == tile_id:
+                    return tile
+        return None
+
+    def get_tile_list(self, tile_id: int) -> list[BoardTile]:
+        """Retrieve all tiles with the specified ID.
+
+        Args:
+            tile_id: The ID of the tiles to find.
+
+        Returns:
+            A list of BoardTile instances with the specified ID.
+        """
+        found_tiles: list[BoardTile] = []
+        for row in self.tiles:
+            for tile in row:
+                if tile.id == tile_id:
+                    found_tiles.append(tile)
+        return found_tiles
 
     def all_tiles(self) -> list[BoardTile]:
         """Get a flat list of all tiles in the board.
