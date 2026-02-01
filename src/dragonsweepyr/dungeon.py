@@ -8,7 +8,7 @@ from random import randint
 from dragonsweepyr.utils import distance
 
 
-class Board:
+class Floor:
 
     """Simple class to store the 2D array of board tiles and a registry of populated tiles."""
 
@@ -26,6 +26,14 @@ class Board:
         ]
         self.populated: set[tuple[int, int]] = set()
 
+    def all_tiles(self) -> list[BoardTile]:
+        """Get a flat list of all tiles in the board.
+
+        Returns:
+            A list of all BoardTile instances in the board.
+        """
+        return [tile for row in self.tiles for tile in row]
+
     def get_tile_at(self, x: int, y: int) -> BoardTile | None:
         """Retrieve a tile at the specified coordinates.
 
@@ -40,7 +48,7 @@ class Board:
             return self.tiles[y][x]
         return None
 
-    def get_tile(self, tile_id: int) -> BoardTile | None:
+    def get_tile_id(self, tile_id: int) -> BoardTile | None:
         """Retrieve the first tile with the specified ID.
 
         Args:
@@ -94,13 +102,70 @@ class Board:
                     found_tiles.append(tile)
         return found_tiles
 
-    def all_tiles(self) -> list[BoardTile]:
-        """Get a flat list of all tiles in the board.
+    def count_identical_neighbors(self, target_tile: BoardTile, radius: int) -> int:
+        """
+        Count the number of identical neighboring tiles within a given radius.
+
+        Javascript Source: countNearMeWithSameId(a, minDistance)
+
+        Args:
+            target_tile: The tile to check neighbors for.
+            radius: The radius within which to count identical neighbors.
 
         Returns:
-            A list of all BoardTile instances in the board.
+            The count of identical neighboring tiles.
         """
-        return [tile for row in self.tiles for tile in row]
+        count = 0
+        for y in range(max(0, target_tile.ty - radius), min(self.height, target_tile.ty + radius + 1)):
+            for x in range(max(0, target_tile.tx - radius), min(self.width, target_tile.tx + radius + 1)):
+                if (x, y) != (target_tile.tx, target_tile.ty):
+                    neighbor_tile = self.get_tile_at(x, y)
+                    if neighbor_tile and neighbor_tile.id == target_tile.id:
+                        count += 1
+        return count
+
+    def count_within_distance(self, source_pos: tuple[int, int], target_id: int, max_distance: float) -> int:
+        """
+        Count the number of tiles with the specified ID within a certain distance from a given position.
+
+        Args:
+            source_pos: The (tx, ty) position to check from.
+            target_id: The TileID to search for.
+            max_distance: The maximum distance to consider.
+
+        Returns:
+            The count of tiles with the target ID within the specified distance.
+        """
+        count = 0
+        source_tx, source_ty = source_pos
+        for tile in self.all_tiles():
+            if tile.id != target_id:
+                continue
+
+            if distance(source_tx, source_ty, tile.tx, tile.ty) <= max_distance:
+                count += 1
+        return count
+
+    def is_within_distance(self, tile_a: BoardTile, target_id: int, max_distance: float) -> bool:
+        """
+        Check if there is a tile with the specified ID within a certain distance from the given tile.
+
+        Javascript Source: isNearId(a, actorId, dist)
+
+        Args:
+            tile_a: The reference tile.
+            target_id: The TileID to search for.
+            max_distance: The maximum distance to consider.
+
+        Returns:
+            True if a tile with the target ID is within the specified distance, False otherwise.
+        """
+        for tile_b in self.all_tiles():
+            if tile_b.id != target_id:
+                continue
+            if distance(tile_a.tx, tile_a.ty, tile_b.tx, tile_b.ty) <= max_distance:
+                return True
+        return False
 
     def set_populated(self, x: int, y: int, is_populated: bool) -> None:
         """Mark a tile as populated or unpopulated.
@@ -136,12 +201,12 @@ class Dungeon:
     def __init__(self) -> None:
         """Initialize the dungeon with given configuration."""
         self.buttons: dict[int, int] = {}
-        self.gameboard: Board = Board(config.grid_columns, config.grid_rows)
+        self.dungeon_floor: Floor = Floor(config.grid_columns, config.grid_rows)
 
     def __repr__(self) -> str:
         """Display the dungeon layout (for debugging purposes)."""
         repr_line = ""
-        for button, tile in zip(self.buttons.items(), self.gameboard.all_tiles()):
+        for button, tile in zip(self.buttons.items(), self.dungeon_floor.all_tiles()):
             repr_line += f"{tile.id}|{tile.tx},{tile.ty}|{button[1]}"
         return repr_line
 
