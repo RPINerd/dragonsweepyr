@@ -5,6 +5,11 @@ from math import pi, sqrt
 from dragonsweepyr.config import config
 
 
+def clamp(v: float) -> float:
+    """clamp01"""
+    return max(0, min(1, v))
+
+
 def distance(x1: float, y1: float, x2: float, y2: float) -> float:
     """distance"""
     return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))

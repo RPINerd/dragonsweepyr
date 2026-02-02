@@ -203,6 +203,8 @@ class Dungeon:
         self.buttons: dict[int, int] = {}
         self.dungeon_floor: Floor = Floor(config.grid_columns, config.grid_rows)
 
+        self.set_buttons()
+
     def __repr__(self) -> str:
         """Display the dungeon layout (for debugging purposes)."""
         repr_line = ""
@@ -214,9 +216,27 @@ class Dungeon:
         """Populate the dungeon with monsters, traps, and items."""
         raise NotImplementedError("Dungeon population logic not yet implemented.")
 
-    def set_buttons(self, button_array: dict[int, int]) -> None:
-        """Set the button array for the dungeon."""
-        self.buttons = button_array
+    def set_buttons(self) -> None:
+        """
+        Set the button array for the dungeon.
+
+        Buttons represent the covered tile, with the value representing the
+        sprite index for the weathering pattern.
+        """
+        grid_columns = config.grid_columns
+        grid_rows = config.grid_rows
+        button_sprite_min: int = 4
+        button_sprite_max: int = 24
+
+        for y in range(grid_rows):
+            for x in range(grid_columns):
+
+                if (x == 0 and y == 0):
+                    self.buttons[x + y * grid_columns] = 25  # Top-left corner decor
+                elif (x == grid_columns - 1 and y == 0):
+                    self.buttons[x + y * grid_columns] = 26  # Top-right corner decor
+                else:
+                    self.buttons[x + y * grid_columns] = randint(button_sprite_min, button_sprite_max)
 
 
 def generate_dungeon() -> Dungeon:
@@ -227,31 +247,6 @@ def generate_dungeon() -> Dungeon:
         A Dungeon instance with generated layout.
     """
     dungeon = Dungeon()
-    grid_columns = config.grid_columns
-    grid_rows = config.grid_rows
-
-    # Buttons represent the covered tile, with the value representing the sprite index for
-    # the weathering pattern.
-    # Tiles represent the actual tile underneath the button; monsters, traps, empty, etc.
-    button_sprite_min: int = 4
-    button_sprite_max: int = 24
-    button_array: dict[int, int] = {}
-    # tile_array: list[BoardTile] = []
-    for y in range(grid_rows):
-        for x in range(grid_columns):
-            # new_tile = BoardTile()
-            # new_tile.tx = x
-            # new_tile.ty = y
-            # tile_array.append(new_tile)
-
-            if (x == 0 and y == 0):
-                button_array[x + y * grid_columns] = 25  # Top-left corner decor
-            elif (x == grid_columns - 1 and y == 0):
-                button_array[x + y * grid_columns] = 26  # Top-right corner decor
-            else:
-                button_array[x + y * grid_columns] = randint(button_sprite_min, button_sprite_max)
-
-    dungeon.set_buttons(button_array)
 
     # Dungeon is generated in several distinct passes (i.e. layers)
     # 1. Base layer, Dragon and Wizard

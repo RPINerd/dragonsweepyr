@@ -268,45 +268,6 @@ function onLoadPage()
         true,
       );
 
-    document.addEventListener("touchstart",
-        function (evt)
-        {
-            evt.preventDefault();
-            mousePressed = true;
-            mouseJustPressed = true;
-            var rect = canvas.getBoundingClientRect();
-            for(var i = 0; i < evt.touches.length; i++)
-            {
-                let touch = evt.touches[i];
-                mouseScreenX = touch.clientX - rect.x;
-                mouseScreenY = touch.clientY - rect.y;
-            }
-        },
-    { passive: false });
-
-    document.addEventListener("touchmove",
-        function (evt)
-        {
-            evt.preventDefault();
-            var rect = canvas.getBoundingClientRect();
-            for(var i = 0; i < evt.touches.length; i++)
-            {
-                let touch = evt.touches[i];
-                mouseScreenX = touch.clientX - rect.x;
-                mouseScreenY = touch.clientY - rect.y;
-            }
-        },
-        { passive: false });
-
-    document.addEventListener("touchend",
-        function (evt)
-        {
-            evt.preventDefault();
-            activatePlayerInteraction();
-            mousePressed = false;
-        },
-        { passive: false });
-
 
     document.onmousemove = function (me)
     {
@@ -656,16 +617,6 @@ class FrameTimer
     }
 }
 
-function arraysEqual(a1, a2)
-{
-    if(a1.length != a2.length) return false;
-    for(let i = 0; i < a1.length; i++)
-    {
-        if(a1[i] != a2[i]) return false;
-    }
-    return true;
-}
-
 class Glyph
 {
     constructor()
@@ -917,22 +868,6 @@ function canvasFromImage(image)
     let ctx = get2DContext(ret);
     ctx.drawImage(image, 0, 0);
     return ret;
-}
-
-function rnd(start, end)
-{
-    return Math.floor(Math.random() * (end - start) + start);
-}
-
-function clamp01(v)
-{
-    return Math.max(0, Math.min(1, v));
-}
-
-function pickRandomArrayElement(theArray)
-{
-    let index = rnd(0, theArray.length);
-    return theArray[index];
 }
 
 function activatePlayerInteraction()

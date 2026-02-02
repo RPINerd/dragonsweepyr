@@ -53,14 +53,6 @@ let sndEvents = {};
 let LEVELUP_FRAMES = [];
 for(let i = 0; i < 113;i++) LEVELUP_FRAMES.push(i);
 
-class RandomGeneratorLayer
-{
-    constructor()
-    {
-        /** @type {Actor[]} */
-        this.actors = [];
-    }
-}
 
 class HoverMenu
 {
