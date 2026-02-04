@@ -18,11 +18,12 @@ class Wall(BoardTile):
 
     """Wall tile."""
 
-    def __init__(self) -> None:
+    def __init__(self, contains: BoardTile | None = None) -> None:
         """"""
         super().__init__()
         self.id = TileID.Wall
         self.stripFrame = 11
+        self.contains = contains
 
     def satisfaction(self) -> int:
         """

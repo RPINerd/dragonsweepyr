@@ -1,10 +1,11 @@
 """Module to house the dungeon population and generation logic."""
 
+import copy
+import random
 
 from dragonsweepyr.config import config
+from dragonsweepyr.monsters import creatures, items, obstacles, spells
 from dragonsweepyr.monsters.tiles import BoardTile
-from random import randint
-
 from dragonsweepyr.utils import distance
 
 
@@ -13,7 +14,8 @@ class Floor:
     """Simple class to store the 2D array of board tiles and a registry of populated tiles."""
 
     def __init__(self, width: int, height: int) -> None:
-        """Initialize the board with given dimensions.
+        """
+        Initialize the board with given dimensions.
 
         Args:
             width: The number of columns in the board.
@@ -27,7 +29,8 @@ class Floor:
         self.populated: set[tuple[int, int]] = set()
 
     def all_tiles(self) -> list[BoardTile]:
-        """Get a flat list of all tiles in the board.
+        """
+        Get a flat list of all tiles in the board.
 
         Returns:
             A list of all BoardTile instances in the board.
@@ -35,7 +38,8 @@ class Floor:
         return [tile for row in self.tiles for tile in row]
 
     def get_tile_at(self, x: int, y: int) -> BoardTile | None:
-        """Retrieve a tile at the specified coordinates.
+        """
+        Retrieve a tile at the specified coordinates.
 
         Args:
             x: The x-coordinate (column).
@@ -49,7 +53,8 @@ class Floor:
         return None
 
     def get_tile_id(self, tile_id: int) -> BoardTile | None:
-        """Retrieve the first tile with the specified ID.
+        """
+        Retrieve the first tile with the specified ID.
 
         Args:
             tile_id: The ID of the tile to find.
@@ -87,7 +92,8 @@ class Floor:
         return found_tiles
 
     def get_tile_list(self, tile_id: int) -> list[BoardTile]:
-        """Retrieve all tiles with the specified ID.
+        """
+        Retrieve all tiles with the specified ID.
 
         Args:
             tile_id: The ID of the tiles to find.
@@ -168,7 +174,8 @@ class Floor:
         return False
 
     def set_populated(self, x: int, y: int, is_populated: bool) -> None:
-        """Mark a tile as populated or unpopulated.
+        """
+        Mark a tile as populated or unpopulated.
 
         Args:
             x: The x-coordinate (column).
@@ -182,7 +189,8 @@ class Floor:
                 self.populated.discard((x, y))
 
     def is_populated(self, x: int, y: int) -> bool:
-        """Check if a tile is populated.
+        """
+        Check if a tile is populated.
 
         Args:
             x: The x-coordinate (column).
@@ -192,6 +200,57 @@ class Floor:
             True if the tile is populated, False otherwise.
         """
         return (x, y) in self.populated
+
+    def add_tile(self, tile_class: type[BoardTile] | BoardTile, count: int = 1, **kwargs) -> None:
+        """
+        Add tile(s) to the floor at random empty positions.
+
+        Args:
+            tile_class: The BoardTile class or instance to add.
+            count: Number of tiles to add.
+            kwargs: Additional properties to set on tiles. Supports any BoardTile attribute, i.e.:
+                - monster_level (or monsterLevel): The monster's level
+                - name: Custom name for the tile
+                - contains: Item contained in this tile
+                - revealed: Whether the tile is revealed
+
+        Returns:
+            None
+        """
+        for _ in range(count):
+            # Find all empty positions
+            empty_positions = [
+                (x, y) for y in range(self.height)
+                for x in range(self.width)
+                if not self.is_populated(x, y)
+            ]
+
+            if not empty_positions:
+                break  # No more empty positions
+
+            # Choose random position
+            x, y = random.choice(empty_positions)
+
+            # Create tile instance
+            if isinstance(tile_class, type):
+                tile = tile_class()
+            else:
+                # If it's already an instance, make a deep copy
+                tile = copy.deepcopy(tile_class)
+
+            # Set position
+            tile.tx = x
+            tile.ty = y
+
+            # Set additional properties from kwargs
+            for key, value in kwargs.items():
+
+                if hasattr(tile, key):
+                    setattr(tile, key, value)
+
+            # Place tile on the floor
+            self.tiles[y][x] = tile
+            self.set_populated(x, y, True)
 
 
 class Dungeon:
@@ -236,7 +295,7 @@ class Dungeon:
                 elif (x == grid_columns - 1 and y == 0):
                     self.buttons[x + y * grid_columns] = 26  # Top-right corner decor
                 else:
-                    self.buttons[x + y * grid_columns] = randint(button_sprite_min, button_sprite_max)
+                    self.buttons[x + y * grid_columns] = random.randint(button_sprite_min, button_sprite_max)
 
 
 def generate_dungeon() -> Dungeon:
@@ -250,59 +309,60 @@ def generate_dungeon() -> Dungeon:
 
     # Dungeon is generated in several distinct passes (i.e. layers)
     # 1. Base layer, Dragon and Wizard
-    add(1, makeDragon)
-    add(1, makeWizard)
+    current_floor = dungeon.dungeon_floor
+    current_floor.add_tile(creatures.Dragon)
+    current_floor.add_tile(creatures.Wizard)
     post_process_layer()
 
     # 2. Big slimes
-    add(5, makeBigSlime8)
+    current_floor.add_tile(creatures.BigSlime, count=5, monster_level=8)
     post_process_layer()
 
     # 3. Mine King
-    add(1, makeMineKing)
+    current_floor.add_tile(creatures.MineKing)
     post_process_layer()
 
     # 4. Giants (Romeo and Juliet)
-    add( 1, makeGiant9).forEach(a => a.name = "romeo")
-    add( 1, makeGiant9).forEach(a => a.name = "juliet")
+    current_floor.add_tile(creatures.Giant, count=1, monster_level=9, name="romeo")
+    current_floor.add_tile(creatures.Giant, count=1, monster_level=9, name="juliet")
     # add(2, makeRat1).forEach(a => a.name = "rat_guard");
     post_process_layer()
 
     # 5. Rat King, Walls, Minutours, Guards, Gargoyles, Gazers, Mines, and Items
-    add(1, makeRatKing)
-    add( 6, makeWall).forEach(a => a.contains = makeTreasure1)
-    add( 5, makeMinotaur6)
-    add( 1, makeGuard7).forEach(a => a.name = "guard1")
-    add( 1, makeGuard7).forEach(a => a.name = "guard2")
-    add( 1, makeGuard7).forEach(a => a.name = "guard3")
-    add( 1, makeGuard7).forEach(a => a.name = "guard4")
-    add( 2, makeGargoyle4).forEach(a => a.name = "gargoyle1")
-    add( 2, makeGargoyle4).forEach(a => a.name = "gargoyle2")
-    add( 2, makeGargoyle4).forEach(a => a.name = "gargoyle3")
-    add( 2, makeGargoyle4).forEach(a => a.name = "gargoyle4")
-    add( 2, makeGazer)
-    add( 9, makeMine)
-    #add( 1, makeMine).forEach(a => a.name = "mine_with_orb");
-    #add( 3, makeWall).forEach(a => a.contains = makeTreasure1);
-    add( 5, makeMedikit)
-    add( 3, makeChest)
-    #add( 1, makeChest).forEach(a => a.contains = makeSpellOrb);
-    add( 2, makeChest).forEach(a => a.contains = makeMedikit)
-    #add(1, makeOrb).forEach(a => a.revealed = true);
-    add(1, makeOrb).forEach(a => {a.revealed = true; a.name = "orb_with_healing";})
-    #add(2, makeMedikit); .forEach(a => a.revealed = true);
-    #add(1, makeFidel);
-    add(1, makeDragonEgg)
+    current_floor.add_tile(creatures.RatKing)
+    current_floor.add_tile(obstacles.Wall, count=6, contains=items.Treasure(1))
+    current_floor.add_tile(creatures.Minotaur, count=5, monster_level=6)
+    current_floor.add_tile(creatures.Guard, count=1, monster_level=7, name="guard1")
+    current_floor.add_tile(creatures.Guard, count=1, monster_level=7, name="guard2")
+    current_floor.add_tile(creatures.Guard, count=1, monster_level=7, name="guard3")
+    current_floor.add_tile(creatures.Guard, count=1, monster_level=7, name="guard4")
+    current_floor.add_tile(creatures.Gargoyle, count=2, monster_level=4, name="gargoyle1")
+    current_floor.add_tile(creatures.Gargoyle, count=2, monster_level=4, name="gargoyle2")
+    current_floor.add_tile(creatures.Gargoyle, count=2, monster_level=4, name="gargoyle3")
+    current_floor.add_tile(creatures.Gargoyle, count=2, monster_level=4, name="gargoyle4")
+    current_floor.add_tile(creatures.Gazer, count=2)
+    current_floor.add_tile(creatures.Mine, count=9)
+    # add( 1, makeMine).forEach(a => a.name = "mine_with_orb");
+    # add( 3, makeWall).forEach(a => a.contains = makeTreasure1);
+    current_floor.add_tile(items.Medikit, count=5)
+    current_floor.add_tile(items.Chest, count=3)
+    # add( 1, makeChest).forEach(a => a.contains = makeSpellOrb);
+    current_floor.add_tile(items.Chest, count=2, contains=items.Medikit)
+    # add(1, makeOrb).forEach(a => a.revealed = true);
+    current_floor.add_tile(items.Orb, count=1, revealed=True, name="orb_with_healing")
+    # add(2, makeMedikit); .forEach(a => a.revealed = true);
+    # add(1, makeFidel);
+    current_floor.add_tile(creatures.DragonEgg, count=1)
     post_process_layer()
 
     # 6. Common monsters (Rats, Bats, Skeletons oh my!)
-    add(13, makeRat1)
-    add(12, makeBat2)
-    add(10, makeSkeleton3)
-    add( 8, makeSlime5)
-    add( 1, makeMimic)
-    add(1, makeGnome)
-    add( 1, makeSpellOrb)
+    current_floor.add_tile(creatures.Rat, count=13, monster_level=1)
+    current_floor.add_tile(creatures.Bat, count=12, monster_level=2)
+    current_floor.add_tile(creatures.Skeleton, count=10, monster_level=3)
+    current_floor.add_tile(creatures.Slime, count=8, monster_level=5)
+    current_floor.add_tile(creatures.Mimic, count=1)
+    current_floor.add_tile(creatures.Gnome, count=1)
+    current_floor.add_tile(spells.SpellMakeOrb, count=1)
     post_process_layer()
 
     return dungeon
