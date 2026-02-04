@@ -209,7 +209,7 @@ class Floor:
             tile_class: The BoardTile class or instance to add.
             count: Number of tiles to add.
             kwargs: Additional properties to set on tiles. Supports any BoardTile attribute, i.e.:
-                - monster_level (or monsterLevel): The monster's level
+                - monster_level: The monster's level
                 - name: Custom name for the tile
                 - contains: Item contained in this tile
                 - revealed: Whether the tile is revealed
@@ -310,7 +310,7 @@ def generate_dungeon() -> Dungeon:
     # Dungeon is generated in several distinct passes (i.e. layers)
     # 1. Base layer, Dragon and Wizard
     current_floor = dungeon.dungeon_floor
-    current_floor.add_tile(creatures.Dragon)
+    current_floor.add_tile(creatures.Dragon, revealed=True)
     current_floor.add_tile(creatures.Wizard)
     post_process_layer()
 

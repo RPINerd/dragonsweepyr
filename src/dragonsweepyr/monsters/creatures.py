@@ -13,7 +13,7 @@ class Bat(BoardTile):
         self.id = TileID.Bat
         self.stripFrame = res_to_frame(134, 231)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -31,7 +31,7 @@ class BigSlime(BoardTile):
         self.id = TileID.BigSlime
         self.stripFrame = res_to_frame(120, 455)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -48,7 +48,7 @@ class DarkKnight(BoardTile):
         super().__init__()
         self.id = TileID.DarkKnight
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
         if monster_level == 5:
             self.stripFrame = res_to_frame(200, 168)
@@ -70,7 +70,7 @@ class Death(BoardTile):
         self.id = TileID.Death
         self.stripFrame = res_to_frame(130, 340)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -89,7 +89,7 @@ class Dragon(BoardTile):
         self.stripFrame = res_to_frame(200, 311)
         self.deadStripFrame = res_to_frame(230, 310)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -110,7 +110,7 @@ class DragonEgg(BoardTile):
         self.stripFrame = res_to_frame(0, 250)
         self.deadStripFrame = self.stripFrame + 1
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = 3
 
     def satisfaction(self) -> int:
@@ -128,7 +128,7 @@ class Eye(BoardTile):
         self.id = TileID.Eye
         self.stripFrame = res_to_frame(135, 167)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -146,7 +146,7 @@ class Fidel(BoardTile):
         self.id = TileID.Fidel
         self.stripFrame = res_to_frame(0, 408)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -166,7 +166,7 @@ class Gargoyle(BoardTile):
         self.id = TileID.Gargoyle
         self.stripFrame = res_to_frame(26, 210)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -215,7 +215,7 @@ class Gazer(BoardTile):
         self.id = TileID.Gazer
         self.stripFrame = res_to_frame(135, 180)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -233,7 +233,7 @@ class Giant(BoardTile):
         self.id = TileID.Giant
         self.stripFrame = res_to_frame(0, 450)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -251,7 +251,7 @@ class Gnome(BoardTile):
         self.id = TileID.Gnome
         self.stripFrame = res_to_frame(40, 408)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = 9
 
     def satisfaction(self) -> int:
@@ -269,7 +269,7 @@ class Guard(BoardTile):
         self.id = TileID.Guard
         self.stripFrame = res_to_frame(200, 200)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -302,7 +302,7 @@ class Mimic(BoardTile):
         self.id = TileID.Mimic
         self.stripFrame = res_to_frame(70, 360)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
         self.mimicMimicking = True
 
@@ -322,7 +322,7 @@ class Mine(BoardTile):
         self.stripFrame = res_to_frame(150, 455)
         self.deadStripFrame = res_to_frame(170, 455)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = 3
 
     def satisfaction(self) -> int:
@@ -340,7 +340,7 @@ class MineKing(BoardTile):
         self.id = TileID.MineKing
         self.stripFrame = res_to_frame(250, 135)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -360,7 +360,7 @@ class Minotaur(BoardTile):
         self.id = TileID.Minotaur
         self.stripFrame = res_to_frame(200, 326)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -378,7 +378,7 @@ class Rat(BoardTile):
         self.id = TileID.Rat
         self.stripFrame = res_to_frame(90, 265)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -396,7 +396,7 @@ class RatKing(BoardTile):
         self.id = TileID.RatKing
         self.stripFrame = res_to_frame(70, 265)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -414,7 +414,7 @@ class Skeleton(BoardTile):
         self.id = TileID.Skeleton
         self.stripFrame = res_to_frame(70, 134)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -432,7 +432,7 @@ class Slime(BoardTile):
         self.id = TileID.Slime
         self.stripFrame = res_to_frame(86, 473)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -450,7 +450,7 @@ class Snake(BoardTile):
         self.id = TileID.Snake
         self.stripFrame = res_to_frame(250, 250)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:
@@ -468,7 +468,7 @@ class Wizard(BoardTile):
         self.id = TileID.Wizard
         self.stripFrame = res_to_frame(72, 76)
         self.isMonster = True
-        self.monsterLevel = monster_level
+        self.monster_level = monster_level
         self.xp = monster_level
 
     def satisfaction(self) -> int:

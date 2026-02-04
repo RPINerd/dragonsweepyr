@@ -61,7 +61,7 @@ class BoardTile:
         self.stripFrame = 1  # Default to empty sprite
         self.deadStripFrame = 0
         self.revealed = False
-        self.monsterLevel = 0
+        self.monster_level = 0
         self.xp = 0
         self.mimicMimicking = False  # TODO: necessary
         self.defeated = False

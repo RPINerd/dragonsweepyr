@@ -264,15 +264,6 @@ function newGame()
 
 function generateDungeon()
 {
-    state.gridW = 13;
-    state.gridH = 10;
-
-    // generator
-    /** @type {RandomGeneratorLayer} */
-    let currentLayer = new RandomGeneratorLayer();
-
-
-
     // post generation initialization
     // let wallHPs = [1, 2, 3, 3, 4, 5];
     let wallHPs = [3, 3, 3, 3, 3, 3];
@@ -297,13 +288,6 @@ function generateDungeon()
                     a.minotaurChestLocation = [b.tx, b.ty];
                 }
             }
-        }
-        else
-        if(a.id == ActorId.Dragon)
-        {
-            a.revealed = true;
-            // make sure its button is clean
-            state.buttonFrames[a.tx + a.ty * state.gridW] = 0;
         }
         else
         if(a.id == ActorId.Gargoyle)
@@ -340,19 +324,6 @@ function generateDungeon()
     if(!RELEASE)
     {
         checkLevel();
-    }
-
-    function add(amount, fn)
-    {
-        let ret = [];
-        for(let i = 0; i < amount; i++)
-        {
-            let a = new Actor();
-            fn(a);
-            currentLayer.actors.push(a);
-            ret.push(a);
-        }
-        return ret;
     }
 }
 
