@@ -11,7 +11,7 @@ class Decoration(BoardTile):
         super().__init__()
         self.id = TileID.Decoration
         self.strip = strip
-        self.stripFrame = frame
+        self.strip_frame = frame
 
 
 class Wall(BoardTile):
@@ -22,7 +22,7 @@ class Wall(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.Wall
-        self.stripFrame = 11
+        self.strip_frame = 11
         self.contains = contains
 
     def satisfaction(self) -> int:

@@ -12,7 +12,7 @@ class Chest(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.Chest
-        self.stripFrame = res_to_frame(70, 360)
+        self.strip_frame = res_to_frame(70, 360)
         self.contains = contains or Treasure(5)
 
     def satisfaction(self) -> int:
@@ -28,7 +28,7 @@ class Crown(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.Crown
-        self.stripFrame = 142
+        self.strip_frame = 142
 
     def satisfaction(self) -> int:
         """Crowns have no locational satisfaction effect."""
@@ -43,7 +43,7 @@ class Medikit(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.Medikit
-        self.stripFrame = 22
+        self.strip_frame = 22
 
     def satisfaction(self) -> int:
         """Medikits have no locational satisfaction effect."""
@@ -58,7 +58,7 @@ class Orb(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.Orb
-        self.stripFrame = 23
+        self.strip_frame = 23
 
     def satisfaction(self) -> int:
         """Orb cannot be placed near an edge."""
@@ -77,11 +77,11 @@ class Treasure(BoardTile):
         self.id = TileID.Treasure
         self.xp = xp
         if xp == 1:
-            self.stripFrame = 30
+            self.strip_frame = 30
         elif xp == 3:
-            self.stripFrame = 31
+            self.strip_frame = 31
         else:  # xp == 5
-            self.stripFrame = 24
+            self.strip_frame = 24
 
     def satisfaction(self) -> int:
         """Treasure has no locational satisfaction effect."""

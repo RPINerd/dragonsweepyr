@@ -5,8 +5,8 @@ import random
 
 from dragonsweepyr.config import config
 from dragonsweepyr.monsters import creatures, items, obstacles, spells
-from dragonsweepyr.monsters.tiles import BoardTile
-from dragonsweepyr.utils import distance
+from dragonsweepyr.monsters.tiles import BoardTile, TileID
+from dragonsweepyr.utils import distance, res_to_frame
 
 
 class Floor:
@@ -27,6 +27,29 @@ class Floor:
             [BoardTile() for _ in range(width)] for _ in range(height)
         ]
         self.populated: set[tuple[int, int]] = set()
+        self.chest_locations: list[tuple[int, int]] = []
+        self.wall_locations: list[tuple[int, int]] = []
+
+    def _collect_chest_locations(self) -> None:
+        """
+        Collect the locations of all chest tiles
+
+        Also set the minotaur chest location property
+        """
+        chest_tiles = self.get_tile_list(TileID.Chest)
+        for chest_tile in chest_tiles:
+            self.chest_locations.append((chest_tile.tx, chest_tile.ty))
+
+    def _collect_wall_locations(self) -> None:
+        """Collect the locations of all wall tiles."""
+        wall_hps = [3, 3, 3, 3, 3, 3]
+        wall_hp_counter = 0
+
+        wall_tiles = self.get_tile_list(TileID.Wall)
+        for wall_tile in wall_tiles:
+            self.wall_locations.append((wall_tile.tx, wall_tile.ty))
+            wall_tile.wallHP = wall_tile.wallMaxHP = wall_hps[wall_hp_counter]
+            wall_hp_counter = (wall_hp_counter + 1) % len(wall_hps)
 
     def all_tiles(self) -> list[BoardTile]:
         """
@@ -252,6 +275,36 @@ class Floor:
             self.tiles[y][x] = tile
             self.set_populated(x, y, True)
 
+    def finalize_floor(self) -> None:
+        """Perform final setup on the tiles after all layers have been added."""
+        self._collect_chest_locations()
+        self._collect_wall_locations()
+
+        for tile in self.all_tiles():
+            if tile.name == "guard1":
+                tile.set_frame(res_to_frame(200, 200))
+            elif tile.name == "guard2":
+                tile.set_frame(res_to_frame(200, 200) + 1)
+            elif tile.name == "guard3":
+                tile.set_frame(res_to_frame(200, 200) + 2)
+            elif tile.name == "guard4":
+                tile.set_frame(res_to_frame(200, 200) + 3)
+            elif tile.id == TileID.Minotaur:
+                for chest_tile in self.chest_locations:
+                    if distance(tile.tx, tile.ty, chest_tile[0], chest_tile[1]) <= 1.5:
+                        tile.minotaurChestLocation = [chest_tile[0], chest_tile[1]]
+            elif tile.id == TileID.Gargoyle:
+                for other_gargoyle in self.get_tile_list(TileID.Gargoyle):
+                    if tile != other_gargoyle and other_gargoyle.name == tile.name:
+                        if tile.tx < other_gargoyle.tx:
+                            tile.set_frame(res_to_frame(0, 210))
+                        elif tile.tx > other_gargoyle.tx:
+                            tile.set_frame(res_to_frame(0, 210) + 3)
+                        elif tile.ty < other_gargoyle.ty:
+                            tile.set_frame(res_to_frame(0, 210) + 1)
+                        elif tile.ty > other_gargoyle.ty:
+                            tile.set_frame(res_to_frame(0, 210) + 2)
+
 
 class Dungeon:
 
@@ -364,6 +417,16 @@ def generate_dungeon() -> Dungeon:
     current_floor.add_tile(creatures.Gnome, count=1)
     current_floor.add_tile(spells.SpellMakeOrb, count=1)
     post_process_layer()
+
+    current_floor.finalize_floor()  # Perform any final adjustments to the floor after all layers are added
+
+    """Javascript source:
+    computeStats()
+    if(!RELEASE)
+    {
+        checkLevel();
+    }
+    """
 
     return dungeon
 

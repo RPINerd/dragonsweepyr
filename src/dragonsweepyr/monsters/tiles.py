@@ -58,7 +58,7 @@ class BoardTile:
         self.fixed = False
         self.id = TileID.Empty
         self.strip = None
-        self.stripFrame = 1  # Default to empty sprite
+        self.strip_frame = 1  # Default to empty sprite
         self.deadStripFrame = 0
         self.revealed = False
         self.monster_level = 0
@@ -73,6 +73,10 @@ class BoardTile:
         self.isMonster = False
         self.name = "none"
         self.minotaurChestLocation = [-1, -1]
+
+    def set_frame(self, frame: int) -> None:
+        """Set the frame of the tile's sprite strip."""
+        self.strip_frame = frame
 
     def is_empty(self) -> bool:
         """Check if the tile is empty."""

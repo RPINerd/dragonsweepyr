@@ -10,7 +10,7 @@ class SpellDisarm(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.SpellDisarm
-        self.stripFrame = 35
+        self.strip_frame = 35
 
 
 class SpellMakeOrb(BoardTile):
@@ -21,7 +21,7 @@ class SpellMakeOrb(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.SpellMakeOrb
-        self.stripFrame = 10
+        self.strip_frame = 10
 
 
 class SpellRevealRats(BoardTile):
@@ -32,7 +32,7 @@ class SpellRevealRats(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.SpellRevealRats
-        self.stripFrame = 29
+        self.strip_frame = 29
 
 
 class SpellRevealSlimes(BoardTile):
@@ -43,4 +43,4 @@ class SpellRevealSlimes(BoardTile):
         """"""
         super().__init__()
         self.id = TileID.SpellRevealSlimes
-        self.stripFrame = 19
+        self.strip_frame = 19
