@@ -1,12 +1,15 @@
 """Module to house the dungeon population and generation logic."""
 
 import copy
+import logging
 import random
 
 from dragonsweepyr.config import config
 from dragonsweepyr.monsters import creatures, items, obstacles, spells
 from dragonsweepyr.monsters.tiles import BoardTile, TileID
 from dragonsweepyr.utils import distance, res_to_frame
+
+logger = logging.getLogger(__name__)
 
 
 class Floor:

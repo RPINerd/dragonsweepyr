@@ -1,16 +1,12 @@
 """Module for handing asset loading and rendering."""
 
-from pathlib import Path
+import logging
 
 import pygame
 
-from dragonsweepyr.logger import LOGGER
+from dragonsweepyr.const import IMAGE_PATH, MUSIC_PATH, SFX_PATH
 
-ASSET_PATH: Path = Path("assets")
-MUSIC_PATH = ASSET_PATH / "music"
-SFX_PATH = ASSET_PATH / "sounds"
-FONT_PATH = ASSET_PATH / "fonts"
-IMAGE_PATH = ASSET_PATH / "images"
+logger = logging.getLogger(__name__)
 
 
 def load_music() -> None:
@@ -18,8 +14,8 @@ def load_music() -> None:
     for music_file in MUSIC_PATH.glob("*.mp3"):
         pygame.mixer.music.load(music_file)
 
-    LOGGER.info("Music files loaded...")
-    LOGGER.debug(f"Loaded music files: {pygame.mixer.music.get_busy()}")
+    logger.info("Music files loaded...")
+    logger.debug(f"Loaded music files: {pygame.mixer.music.get_busy()}")
 
 
 def load_sfx() -> dict[str, pygame.mixer.Sound]:
@@ -30,8 +26,8 @@ def load_sfx() -> dict[str, pygame.mixer.Sound]:
         sound_name = sfx_file.stem
         sfx_dict[sound_name] = pygame.mixer.Sound(sfx_file)
 
-    LOGGER.info("Sound effect files loaded...")
-    LOGGER.debug(f"Loaded SFX files: {list(sfx_dict.keys())}")
+    logger.info("Sound effect files loaded...")
+    logger.debug(f"Loaded SFX files: {list(sfx_dict.keys())}")
 
     return sfx_dict
 
@@ -61,6 +57,6 @@ def load_spritesheet(
             sprite.blit(spritesheet, (0, 0), (x, y, sprite_width, sprite_height))
             sprites.append(sprite)
 
-    LOGGER.info(f"Spritesheet '{filename}' loaded with {len(sprites)} sprites.")
+    logger.info(f"Spritesheet '{filename}' loaded with {len(sprites)} sprites.")
 
     return sprites

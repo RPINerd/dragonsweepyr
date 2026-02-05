@@ -38,6 +38,3 @@ def setup_logger(
     logger_instance.addHandler(ch)
 
     return logger_instance
-
-
-LOGGER = setup_logger()

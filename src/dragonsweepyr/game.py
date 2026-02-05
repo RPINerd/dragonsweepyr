@@ -1,12 +1,15 @@
 """Main game application with a 13x10 grid."""
 from __future__ import annotations
 
+import logging
 import random
 
 import pygame
 
 from dragonsweepyr.config import config
-from dragonsweepyr.logger import LOGGER, setup_logger
+from dragonsweepyr.logger import setup_logger
+
+logger = setup_logger(__name__, level=logging.INFO)
 
 
 class GameWindow:
@@ -28,7 +31,7 @@ class GameWindow:
     def initialize(self) -> None:
         """Initialize pygame and create the game window."""
         pygame.init()
-        LOGGER.info("Pygame initialized")
+        logger.info("Pygame initialized")
 
         window_width = self.config.grid_columns * self.config.tile_size
         window_height = self.config.grid_rows * self.config.tile_size + self.config.ui_height
@@ -37,7 +40,7 @@ class GameWindow:
         pygame.display.set_caption(self.config.window_title)
         self.clock = pygame.time.Clock()
 
-        LOGGER.info(
+        logger.info(
             f"Game window created: {window_width}x{window_height} "
             f"({self.config.grid_columns}x{self.config.grid_rows} grid)"
         )
@@ -110,7 +113,7 @@ class GameWindow:
     def shutdown(self) -> None:
         """Clean up and close the game window."""
         pygame.quit()
-        LOGGER.info("Game closed")
+        logger.info("Game closed")
 
 
 def show_loading_c64(surface: pygame.Surface) -> None:

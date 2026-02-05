@@ -1,5 +1,13 @@
 """Constants for DragonSweepyr. Used in original JavaScript, but may be able to refactor/integrate for the python version."""
 
+from pathlib import Path
+
+ASSET_PATH: Path = Path("assets")
+MUSIC_PATH = ASSET_PATH / "music"
+SFX_PATH = ASSET_PATH / "sounds"
+FONT_PATH = ASSET_PATH / "fonts"
+IMAGE_PATH = ASSET_PATH / "images"
+
 TIME_TO_HOVER_MENU = 0.33
 BOOK_MOVEMENT_DURATION = 1
 MAX_HP = 19
