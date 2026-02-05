@@ -7,43 +7,34 @@ import random
 import pygame
 
 from dragonsweepyr.config import config
+from dragonsweepyr.dungeon import Dungeon
 from dragonsweepyr.logger import setup_logger
 
 logger = setup_logger(__name__, level=logging.INFO)
 
 
-class GameWindow:
+class Game:
 
     """Manages the pygame window and grid rendering."""
 
     def __init__(self) -> None:
-        """
-        Initialize the game window.
-
-        Args:
-            config: GameConfig instance. Defaults to GameConfig() if None.
-        """
+        """Initialize the game"""
         self.config = config
-        self.screen: pygame.Surface | None = None
-        self.clock: pygame.time.Clock | None = None
+
+        self.window_width = self.config.grid_columns * self.config.tile_size
+        self.window_height = self.config.grid_rows * self.config.tile_size + self.config.ui_height
+        self.screen: pygame.Surface = pygame.display.set_mode((self.window_width, self.window_height))
+        pygame.display.set_caption(self.config.window_title)
+
+        self.clock: pygame.time.Clock = pygame.time.Clock()
         self.running = False
 
-    def initialize(self) -> None:
-        """Initialize pygame and create the game window."""
-        pygame.init()
-        logger.info("Pygame initialized")
-
-        window_width = self.config.grid_columns * self.config.tile_size
-        window_height = self.config.grid_rows * self.config.tile_size + self.config.ui_height
-
-        self.screen = pygame.display.set_mode((window_width, window_height))
-        pygame.display.set_caption(self.config.window_title)
-        self.clock = pygame.time.Clock()
-
         logger.info(
-            f"Game window created: {window_width}x{window_height} "
+            f"Game window created: {self.window_width}x{self.window_height} "
             f"({self.config.grid_columns}x{self.config.grid_rows} grid)"
         )
+
+        self.dungeon: Dungeon | None = None
 
     def _draw_grid(self) -> None:
         """Draw the grid on the screen."""
@@ -74,8 +65,19 @@ class GameWindow:
 
     def run(self) -> None:
         """Run the main game loop."""
-        self.initialize()
         self.running = True
+
+        # Show loading animation for 1 second
+        loading_duration = 1.5
+        loading_elapsed = 0.0
+
+        while loading_elapsed < loading_duration:
+            dt = self.clock.tick(24) / 1000.0
+            loading_elapsed += dt
+
+            self.screen.fill("#000000")
+            show_loading_c64(self.screen)
+            pygame.display.flip()
 
         try:
             while self.running:
@@ -110,7 +112,8 @@ class GameWindow:
         self._draw_grid()
         pygame.display.flip()
 
-    def shutdown(self) -> None:
+    @staticmethod
+    def shutdown() -> None:
         """Clean up and close the game window."""
         pygame.quit()
         logger.info("Game closed")
@@ -141,10 +144,8 @@ def show_loading_c64(surface: pygame.Surface) -> None:
 
 def main() -> None:
     """Main function to run the game."""
-    setup_logger()
-    game_window = GameWindow()
-    game_window.run()
+    pygame.init()
+    logger.info("Pygame initialized")
 
-
-if __name__ == "__main__":
-    main()
+    dragonsweepyr = Game()
+    dragonsweepyr.run()
