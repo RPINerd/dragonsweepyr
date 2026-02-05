@@ -5,6 +5,7 @@ import logging
 import random
 
 from dragonsweepyr.config import config
+from dragonsweepyr.happiness import happiness
 from dragonsweepyr.monsters import creatures, items, obstacles, spells
 from dragonsweepyr.monsters.tiles import BoardTile, TileID
 from dragonsweepyr.utils import distance, res_to_frame
@@ -33,6 +34,17 @@ class Floor:
         self.chest_locations: list[tuple[int, int]] = []
         self.wall_locations: list[tuple[int, int]] = []
 
+        self.satisfaction: int = 0
+
+    def __repr__(self) -> str:
+        """Display the floor layout (for debugging purposes)."""
+        repr_line = ""
+        for row in self.tiles:
+            for tile in row:
+                repr_line += f"{tile.id}|{tile.tx},{tile.ty} "
+            repr_line += "\n"
+        return repr_line
+
     def _collect_chest_locations(self) -> None:
         """
         Collect the locations of all chest tiles
@@ -54,14 +66,34 @@ class Floor:
             wall_tile.wallHP = wall_tile.wallMaxHP = wall_hps[wall_hp_counter]
             wall_hp_counter = (wall_hp_counter + 1) % len(wall_hps)
 
+    def _fix_tiles(self) -> None:
+        """Set all tiles on the floor to fixed."""
+        for tile in self.all_tiles():
+            tile.fixed = True
+
+    def _swap_tiles(self, tile_a: BoardTile, tile_b: BoardTile) -> None:
+        """
+        Swap the positions of two tiles on the floor.
+
+        Args:
+            tile_a: The first tile to swap.
+            tile_b: The second tile to swap.
+        """
+        self.tiles[tile_a.ty][tile_a.tx], self.tiles[tile_b.ty][tile_b.tx] = self.tiles[tile_b.ty][tile_b.tx], self.tiles[tile_a.ty][tile_a.tx]
+        tile_a.tx, tile_b.tx = tile_b.tx, tile_a.tx
+        tile_a.ty, tile_b.ty = tile_b.ty, tile_a.ty
+
     def all_tiles(self) -> list[BoardTile]:
         """
-        Get a flat list of all tiles in the board.
+        Get a flat list of all populated tiles in the board.
 
         Returns:
             A list of all BoardTile instances in the board.
         """
-        return [tile for row in self.tiles for tile in row]
+        tile_list: list[BoardTile] = []
+        for coord in self.populated:
+            tile_list.append(self.tiles[coord[1]][coord[0]])
+        return tile_list
 
     def get_tile_at(self, x: int, y: int) -> BoardTile | None:
         """
@@ -278,6 +310,51 @@ class Floor:
             self.tiles[y][x] = tile
             self.set_populated(x, y, True)
 
+    def post_process_layer(self) -> None:
+        """
+        Perform any post-processing needed on the floor layer.
+
+        Javascript Source: endLayer()
+
+
+        for(let a of layerActors)
+        {
+            a.fixed = true;
+        }
+        """
+        if self.satisfaction == 0:
+            self.satisfaction = happiness(self)
+
+        for _ in range(4):
+            # Shuffle the order of the tiles to prevent bias in processing
+            random.shuffle(self.all_tiles())
+
+            for tile_a in self.all_tiles():
+                if tile_a.fixed:
+                    continue
+
+                happiest_replacement = None
+                best_satisfaction = self.satisfaction
+
+                for tile_b in self.all_tiles():
+                    if tile_b.fixed or tile_a == tile_b:
+                        continue
+
+                    # Swap tiles and evaluate satisfaction
+                    self._swap_tiles(tile_a, tile_b)
+                    new_satisfaction = happiness(self)
+                    self._swap_tiles(tile_a, tile_b)  # Swap back
+
+                    if new_satisfaction >= best_satisfaction:
+                        best_satisfaction = new_satisfaction
+                        happiest_replacement = tile_b
+
+                if happiest_replacement:
+                    self._swap_tiles(tile_a, happiest_replacement)
+                    self.satisfaction = best_satisfaction
+
+        self._fix_tiles()
+
     def finalize_floor(self) -> None:
         """Perform final setup on the tiles after all layers have been added."""
         self._collect_chest_locations()
@@ -307,6 +384,12 @@ class Floor:
                             tile.set_frame(res_to_frame(0, 210) + 1)
                         elif tile.ty > other_gargoyle.ty:
                             tile.set_frame(res_to_frame(0, 210) + 2)
+
+    def render_floor(self) -> None:
+        """Render the floor tiles to the console (for debugging purposes)."""
+        for row in self.tiles:
+            row_str = ' '.join(f"{tile.id:02}" for tile in row)
+            print(row_str)
 
 
 class Dungeon:
@@ -368,21 +451,21 @@ def generate_dungeon() -> Dungeon:
     current_floor = dungeon.dungeon_floor
     current_floor.add_tile(creatures.Dragon, revealed=True)
     current_floor.add_tile(creatures.Wizard)
-    post_process_layer()
+    current_floor.post_process_layer()
 
     # 2. Big slimes
     current_floor.add_tile(creatures.BigSlime, count=5, monster_level=8)
-    post_process_layer()
+    current_floor.post_process_layer()
 
     # 3. Mine King
     current_floor.add_tile(creatures.MineKing)
-    post_process_layer()
+    current_floor.post_process_layer()
 
     # 4. Giants (Romeo and Juliet)
     current_floor.add_tile(creatures.Giant, count=1, monster_level=9, name="romeo")
     current_floor.add_tile(creatures.Giant, count=1, monster_level=9, name="juliet")
     # add(2, makeRat1).forEach(a => a.name = "rat_guard");
-    post_process_layer()
+    current_floor.post_process_layer()
 
     # 5. Rat King, Walls, Minutours, Guards, Gargoyles, Gazers, Mines, and Items
     current_floor.add_tile(creatures.RatKing)
@@ -409,7 +492,7 @@ def generate_dungeon() -> Dungeon:
     # add(2, makeMedikit); .forEach(a => a.revealed = true);
     # add(1, makeFidel);
     current_floor.add_tile(creatures.DragonEgg, count=1)
-    post_process_layer()
+    current_floor.post_process_layer()
 
     # 6. Common monsters (Rats, Bats, Skeletons oh my!)
     current_floor.add_tile(creatures.Rat, count=13, monster_level=1)
@@ -419,7 +502,7 @@ def generate_dungeon() -> Dungeon:
     current_floor.add_tile(creatures.Mimic, count=1)
     current_floor.add_tile(creatures.Gnome, count=1)
     current_floor.add_tile(spells.SpellMakeOrb, count=1)
-    post_process_layer()
+    current_floor.post_process_layer()
 
     current_floor.finalize_floor()  # Perform any final adjustments to the floor after all layers are added
 
@@ -432,69 +515,3 @@ def generate_dungeon() -> Dungeon:
     """
 
     return dungeon
-
-
-def post_process_layer() -> None:
-    """
-    Perform any post-processing needed on the dungeon layer.
-
-    Javascript Source: endLayer()
-
-    let layerActors = [];
-        for(let layerActorToAdd of currentLayer.actors)
-        {
-            let availableActor = state.actors.find(a => isEmpty(a));
-            if(availableActor == undefined) continue;
-            availableActor.copyFrom(layerActorToAdd);
-            layerActors.push(availableActor);
-        }
-
-        let bestHappiness = happiness();
-        for(let k = 0; k < 4; k++)
-        {
-            shuffle(state.actors);
-            for(let i = 0; i < layerActors.length; i++)
-            {
-                let a = layerActors[i];
-                let happiestReplacement = null;
-                for(let j = 0; j < state.actors.length; j++)
-                {
-                    let b = state.actors[j];
-                    if(b.fixed || a === b) continue;
-                    swapPlaces(a, b);
-                    let newHappiness = happiness();
-                    swapPlaces(a, b);
-                    if(newHappiness >= bestHappiness)
-                    {
-                        bestHappiness = newHappiness;
-                        happiestReplacement = b;
-                    }
-                }
-
-                if(happiestReplacement != null)
-                {
-                    swapPlaces(a, happiestReplacement);
-                }
-            }
-        }
-
-        for(let a of layerActors)
-        {
-            a.fixed = true;
-        }
-    """
-    raise NotImplementedError("Dungeon layer post-processing not yet implemented.")
-
-
-def swap_tiles(a: BoardTile, b: BoardTile) -> None:
-    """
-    Swap the positions of two tiles.
-
-    Javascript Source: swapPlaces(a, b)
-
-    Args:
-        a: The first tile to swap.
-        b: The second tile to swap.
-    """
-    a.tx, b.tx = b.tx, a.tx
-    a.ty, b.ty = b.ty, a.ty

@@ -1,16 +1,19 @@
 """Module to calculate the happiness score of the current dungeon state."""
 import logging
+from typing import TYPE_CHECKING
 
 from dragonsweepyr.config import config
 from dragonsweepyr.const import ORB_RADIUS
-from dragonsweepyr.dungeon import Floor
 from dragonsweepyr.monsters.tiles import BoardTile, TileID
 from dragonsweepyr.utils import distance, is_edge
+
+if TYPE_CHECKING:
+    from dragonsweepyr.dungeon import Floor
 
 logger = logging.getLogger(__name__)
 
 
-def happiness(current_floor: Floor) -> int:
+def happiness(current_floor: "Floor") -> int:
     """
     Calculate the happiness score of the current dungeon state.
 
@@ -164,7 +167,7 @@ def happiness(current_floor: Floor) -> int:
     return happiness_score
 
 
-def orb_happiness(orb: BoardTile, floor: Floor) -> int:
+def orb_happiness(orb: BoardTile, floor: "Floor") -> int:
     """
     Calculate the satisfaction score for the Orb tile based on its position and neighbors.
 
