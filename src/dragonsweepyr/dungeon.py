@@ -4,10 +4,13 @@ import copy
 import logging
 import random
 
+import pygame
+
 from dragonsweepyr.config import config
 from dragonsweepyr.happiness import happiness
 from dragonsweepyr.monsters import creatures, items, obstacles, spells
 from dragonsweepyr.monsters.tiles import BoardTile, TileID
+from dragonsweepyr.resources import assets
 from dragonsweepyr.utils import distance, res_to_frame
 
 logger = logging.getLogger(__name__)
@@ -27,6 +30,7 @@ class Floor:
         """
         self.width = width
         self.height = height
+        self.tile_group = pygame.sprite.Group()
         self.tiles: list[list[BoardTile]] = [
             [BoardTile() for _ in range(width)] for _ in range(height)
         ]
@@ -306,6 +310,10 @@ class Floor:
                 if hasattr(tile, key):
                     setattr(tile, key, value)
 
+            # Assign spritesheet to tile from asset manager
+            if assets.monster_spritesheet is not None:
+                tile.strip = assets.monster_spritesheet
+
             # Place tile on the floor
             self.tiles[y][x] = tile
             self.set_populated(x, y, True)
@@ -384,6 +392,7 @@ class Floor:
                             tile.set_frame(res_to_frame(0, 210) + 1)
                         elif tile.ty > other_gargoyle.ty:
                             tile.set_frame(res_to_frame(0, 210) + 2)
+            self.tile_group.add(tile)
 
     def render_floor(self) -> None:
         """Render the floor tiles to the console (for debugging purposes)."""

@@ -1,0 +1,344 @@
+{
+    "rat": {
+        "x": 90,
+        "y": 265,
+        "frame": 261,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "wizard": {
+        "x": 72,
+        "y": 76,
+        "frame": 68,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "bat": {
+        "x": 134,
+        "y": 231,
+        "frame": 232,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "skeleton": {
+        "x": 70,
+        "y": 134,
+        "frame": 132,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "gargoyle": {
+        "x": 26,
+        "y": 210,
+        "frame": 209,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "gargoyle_left": {
+        "x": 0,
+        "y": 210,
+        "frame": 208,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "gargoyle_up": {
+        "x": 0,
+        "y": 210,
+        "frame": 209,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "gargoyle_down": {
+        "x": 0,
+        "y": 210,
+        "frame": 210,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "gargoyle_right": {
+        "x": 0,
+        "y": 210,
+        "frame": 211,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "slime": {
+        "x": 86,
+        "y": 473,
+        "frame": 469,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "rat_king": {
+        "x": 70,
+        "y": 265,
+        "frame": 260,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "gazer": {
+        "x": 135,
+        "y": 180,
+        "frame": 184,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "eye": {
+        "x": 135,
+        "y": 167,
+        "frame": 168,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "dark_knight_level5": {
+        "x": 200,
+        "y": 168,
+        "frame": 172,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "minotaur": {
+        "x": 200,
+        "y": 326,
+        "frame": 332,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "snake": {
+        "x": 250,
+        "y": 250,
+        "frame": 255,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "guard": {
+        "x": 200,
+        "y": 200,
+        "frame": 204,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "guard1": {
+        "x": 200,
+        "y": 200,
+        "frame": 204,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "guard2": {
+        "x": 200,
+        "y": 200,
+        "frame": 205,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "guard3": {
+        "x": 200,
+        "y": 200,
+        "frame": 207,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "guard4": {
+        "x": 200,
+        "y": 200,
+        "frame": 206,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "dark_knight_level7": {
+        "x": 200,
+        "y": 100,
+        "frame": 108,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "big_slime": {
+        "x": 120,
+        "y": 455,
+        "frame": 455,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "giant": {
+        "x": 0,
+        "y": 450,
+        "frame": 448,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "death": {
+        "x": 130,
+        "y": 340,
+        "frame": 344,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "mine_king": {
+        "x": 250,
+        "y": 135,
+        "frame": 143,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "mimic": {
+        "x": 70,
+        "y": 360,
+        "frame": 356,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "mimic_alternate": {
+        "x": 70,
+        "y": 375,
+        "frame": 372,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "dragon": {
+        "x": 200,
+        "y": 311,
+        "frame": 316,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "dragon_dead": {
+        "x": 230,
+        "y": 310,
+        "frame": 318,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "dragon_egg": {
+        "x": 0,
+        "y": 250,
+        "frame": 240,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "dragon_egg_dead": {
+        "x": 0,
+        "y": 250,
+        "frame": 241,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "fidel": {
+        "x": 0,
+        "y": 408,
+        "frame": 400,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "gnome": {
+        "x": 40,
+        "y": 408,
+        "frame": 402,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "mine": {
+        "x": 150,
+        "y": 455,
+        "frame": 457,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "mine_dead": {
+        "x": 170,
+        "y": 455,
+        "frame": 458,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "chest": {
+        "x": 70,
+        "y": 360,
+        "frame": 356,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    },
+    "empty": {
+        "x": 16,
+        "y": 0,
+        "frame": 1,
+        "width": 16,
+        "height": 16,
+        "pivot_x": 8,
+        "pivot_y": 8
+    }
+}

@@ -1,7 +1,17 @@
 """Base class for tile entities and decorations"""
-from dataclasses import dataclass
 
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+import pygame
+
+from dragonsweepyr.resources import assets
 from dragonsweepyr.utils import distance
+
+if TYPE_CHECKING:
+    from dragonsweepyr.resources import SpriteSheet
 
 
 @dataclass
@@ -47,17 +57,19 @@ class TileID:
     Eye: int = 34
 
 
-class BoardTile:
+class BoardTile(pygame.sprite.Sprite):
 
     """Represents a single tile on the game board."""
 
     def __init__(self) -> None:
-        """"""
+        """Initialize the board tile."""
         self.tx = 0
         self.ty = 0
         self.fixed = False
         self.id = TileID.Empty
-        self.strip = None
+        self.image: pygame.Surface = assets.blank_sprite
+        self.rect: pygame.Rect = self.image.get_rect()
+        self.strip: SpriteSheet | None = None
         self.strip_frame = 1  # Default to empty sprite
         self.deadStripFrame = 0
         self.revealed = False
@@ -82,7 +94,7 @@ class BoardTile:
         """Check if the tile is empty."""
         return self.id == TileID.Empty
 
-    def is_near(self, other: "BoardTile", dist: int | float = 1) -> bool:
+    def is_near(self, other: BoardTile, dist: int | float = 1) -> bool:
         """
         Check if this tile is near to another tile.
 

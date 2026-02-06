@@ -7,8 +7,9 @@ import random
 import pygame
 
 from dragonsweepyr.config import config
-from dragonsweepyr.dungeon import Dungeon
+from dragonsweepyr.dungeon import Dungeon, generate_dungeon
 from dragonsweepyr.logger import setup_logger
+from dragonsweepyr.resources import assets
 
 logger = setup_logger(__name__, level=logging.INFO)
 
@@ -34,6 +35,7 @@ class Game:
             f"({self.config.grid_columns}x{self.config.grid_rows} grid)"
         )
 
+        # Load assets into asset manager
         self.dungeon: Dungeon | None = None
 
     def _draw_grid(self) -> None:
@@ -68,7 +70,7 @@ class Game:
         self.running = True
 
         # Show loading animation for 1 second
-        loading_duration = 1.5
+        loading_duration = 0.75
         loading_elapsed = 0.0
 
         while loading_elapsed < loading_duration:
@@ -78,6 +80,11 @@ class Game:
             self.screen.fill("#000000")
             show_loading_c64(self.screen)
             pygame.display.flip()
+
+        assets.load_all_sfx()
+        # Generate dungeon using asset manager
+        self.dungeon = generate_dungeon()
+        logger.info("Dungeon generated with sprites")
 
         try:
             while self.running:
@@ -110,6 +117,8 @@ class Game:
 
         self.screen.fill(self.config.background_color)
         self._draw_grid()
+        if self.dungeon is not None:
+            self.dungeon.dungeon_floor.tile_group.draw(self.screen)
         pygame.display.flip()
 
     @staticmethod
