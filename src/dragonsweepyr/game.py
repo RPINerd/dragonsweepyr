@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 import random
+import threading
 
 import pygame
 
@@ -69,22 +70,46 @@ class Game:
         """Run the main game loop."""
         self.running = True
 
-        # Show loading animation for 1 second
-        loading_duration = 0.75
-        loading_elapsed = 0.0
-
-        while loading_elapsed < loading_duration:
-            dt = self.clock.tick(24) / 1000.0
-            loading_elapsed += dt
-
-            self.screen.fill("#000000")
-            show_loading_c64(self.screen)
-            pygame.display.flip()
-
+        # Load assets
         assets.load_all_sfx()
-        # Generate dungeon using asset manager
-        self.dungeon = generate_dungeon()
-        logger.info("Dungeon generated with sprites")
+
+        # Track dungeon generation
+        generation_error: Exception | None = None
+        dungeon_ready = False
+
+        def generate_dungeon_threaded() -> None:
+            nonlocal generation_error, dungeon_ready
+            try:
+                self.dungeon = generate_dungeon()
+                logger.info("Dungeon generated with sprites")
+                dungeon_ready = True
+            except Exception as e:
+                generation_error = e
+                logger.error(f"Failed to generate dungeon: {e}")
+
+        # Start dungeon generation in background
+        generation_thread = threading.Thread(target=generate_dungeon_threaded, daemon=True)
+        generation_thread.start()
+
+        # Show loading animation while dungeon generates
+        minimum_load_duration = 0.75
+        start_time = pygame.time.get_ticks()
+
+        while True:
+            elapsed_seconds = (pygame.time.get_ticks() - start_time) / 1000.0
+
+            # Continue animation if: (1) minimum duration not met OR (2) dungeon not ready
+            if elapsed_seconds < minimum_load_duration or not dungeon_ready:
+                self.clock.tick(24)
+                self.screen.fill("#000000")
+                show_loading_c64(self.screen)
+                pygame.display.flip()
+            else:
+                break
+
+        # Check for errors during generation
+        if generation_error is not None:
+            raise generation_error
 
         try:
             while self.running:
