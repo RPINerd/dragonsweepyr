@@ -15,7 +15,7 @@ class GameConfig:
     ui_height: int = 100
     target_fps: int = 30
     # fullscreen: bool = False
-    background_color: tuple[int, int, int] = (16, 16, 20)
+    background_color: str = "#4D596D"
 
     # Grid settings
     grid_columns: int = 13
@@ -24,7 +24,7 @@ class GameConfig:
     grid_offset_x: int = 50
     grid_offset_y: int = 50
     show_grid: bool = True
-    grid_color: tuple[int, int, int] = (100, 100, 100)
+    grid_color: str = "#474747"
 
     # Audio settings
     master_volume: float = 1.0

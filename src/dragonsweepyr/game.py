@@ -92,7 +92,7 @@ class Game:
         generation_thread.start()
 
         # Show loading animation while dungeon generates
-        minimum_load_duration = 0.75
+        minimum_load_duration = 0.5
         start_time = pygame.time.get_ticks()
 
         while True:
@@ -101,7 +101,7 @@ class Game:
             # Continue animation if: (1) minimum duration not met OR (2) dungeon not ready
             if elapsed_seconds < minimum_load_duration or not dungeon_ready:
                 self.clock.tick(24)
-                self.screen.fill("#000000")
+                self.screen.fill("#4C596B")
                 show_loading_c64(self.screen)
                 pygame.display.flip()
             else:

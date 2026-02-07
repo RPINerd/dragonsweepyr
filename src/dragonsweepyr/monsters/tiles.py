@@ -65,8 +65,8 @@ class BoardTile(pygame.sprite.Sprite):
     def __init__(self) -> None:
         """Initialize the board tile."""
         super().__init__()
-        self.tx = 0
-        self.ty = 0
+        self._tx = 0
+        self._ty = 0
         self.fixed = False
         self.id = TileID.Empty
         self.image: pygame.Surface = assets.blank_sprite
@@ -88,6 +88,35 @@ class BoardTile(pygame.sprite.Sprite):
         self.name = "none"
         self.minotaurChestLocation = [-1, -1]
         self._satisfaction_func = None
+
+    @property
+    def tx(self) -> int:
+        """Get the x coordinate."""
+        return self._tx
+
+    @tx.setter
+    def tx(self, value: int) -> None:
+        """Set the x coordinate and update rect position."""
+        self._tx = value
+        self._update_rect_position()
+
+    @property
+    def ty(self) -> int:
+        """Get the y coordinate."""
+        return self._ty
+
+    @ty.setter
+    def ty(self, value: int) -> None:
+        """Set the y coordinate and update rect position."""
+        self._ty = value
+        self._update_rect_position()
+
+    def _update_rect_position(self) -> None:
+        """Update the rect position based on tile coordinates."""
+        from dragonsweepyr.config import config
+        screen_x = self._tx * config.tile_size
+        screen_y = self._ty * config.tile_size
+        self.rect.topleft = (screen_x, screen_y)
 
     def load_from_def(self, definition: EntityDef) -> None:
         """
@@ -120,8 +149,16 @@ class BoardTile(pygame.sprite.Sprite):
         col = self.strip_frame % 16
 
         try:
-            self.image = self.strip.get_sprite(row, col)
+            sprite = self.strip.get_sprite(row, col)
+            # Scale sprite to tile size
+            from dragonsweepyr.config import config
+            scaled_size = config.tile_size
+            self.image = pygame.transform.scale(sprite, (scaled_size, scaled_size))
             self.rect = self.image.get_rect()
+            # Position rect at the correct grid coordinates
+            screen_x = self._tx * config.tile_size
+            screen_y = self._ty * config.tile_size
+            self.rect.topleft = (screen_x, screen_y)
         except IndexError:
             # Frame out of bounds, use blank sprite
             pass
