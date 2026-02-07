@@ -64,6 +64,7 @@ class BoardTile(pygame.sprite.Sprite):
 
     def __init__(self) -> None:
         """Initialize the board tile."""
+        super().__init__()
         self.tx = 0
         self.ty = 0
         self.fixed = False
