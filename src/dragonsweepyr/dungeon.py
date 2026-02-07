@@ -323,6 +323,7 @@ class Floor:
             # Assign spritesheet to tile from asset manager
             if assets.monster_spritesheet is not None:
                 tile.strip = assets.monster_spritesheet
+                tile.update_image()
 
             # Place tile on the floor
             self.tiles[y][x] = tile

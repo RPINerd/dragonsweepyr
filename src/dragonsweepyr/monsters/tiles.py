@@ -108,6 +108,23 @@ class BoardTile(pygame.sprite.Sprite):
     def set_frame(self, frame: int) -> None:
         """Set the frame of the tile's sprite strip."""
         self.strip_frame = frame
+        self.update_image()
+
+    def update_image(self) -> None:
+        """Update the tile's sprite image from the spritesheet based on strip_frame."""
+        if self.strip is None:
+            return
+
+        # Convert frame index to row and column (assuming 16x16 grid)
+        row = self.strip_frame // 16
+        col = self.strip_frame % 16
+
+        try:
+            self.image = self.strip.get_sprite(row, col)
+            self.rect = self.image.get_rect()
+        except IndexError:
+            # Frame out of bounds, use blank sprite
+            pass
 
     def is_empty(self) -> bool:
         """Check if the tile is empty."""
