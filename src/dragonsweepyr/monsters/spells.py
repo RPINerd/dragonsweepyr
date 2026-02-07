@@ -1,46 +1,29 @@
-"""BoardTile child classes for spells"""
-from dragonsweepyr.monsters.tiles import BoardTile, TileID
+"""
+Factory functions for creating spell entities.
+
+All spell entities are now created through the data-driven entity system.
+See entity_definitions.py for entity configuration.
+"""
+
+from dragonsweepyr.monsters.entity_definitions import entity_factory
+from dragonsweepyr.monsters.tiles import TileID
 
 
-class SpellDisarm(BoardTile):
-
-    """Spell to disarm."""
-
-    def __init__(self) -> None:
-        """"""
-        super().__init__()
-        self.id = TileID.SpellDisarm
-        self.strip_frame = 35
+def SpellDisarm():
+    """Create a SpellDisarm spell."""
+    return entity_factory.create(TileID.SpellDisarm)
 
 
-class SpellMakeOrb(BoardTile):
-
-    """Spell to make orb."""
-
-    def __init__(self) -> None:
-        """"""
-        super().__init__()
-        self.id = TileID.SpellMakeOrb
-        self.strip_frame = 10
+def SpellMakeOrb():
+    """Create a SpellMakeOrb spell."""
+    return entity_factory.create(TileID.SpellMakeOrb)
 
 
-class SpellRevealRats(BoardTile):
-
-    """Spell to reveal rats."""
-
-    def __init__(self) -> None:
-        """"""
-        super().__init__()
-        self.id = TileID.SpellRevealRats
-        self.strip_frame = 29
+def SpellRevealRats():
+    """Create a SpellRevealRats spell."""
+    return entity_factory.create(TileID.SpellRevealRats)
 
 
-class SpellRevealSlimes(BoardTile):
-
-    """Spell to reveal slimes."""
-
-    def __init__(self) -> None:
-        """"""
-        super().__init__()
-        self.id = TileID.SpellRevealSlimes
-        self.strip_frame = 19
+def SpellRevealSlimes():
+    """Create a SpellRevealSlimes spell."""
+    return entity_factory.create(TileID.SpellRevealSlimes)

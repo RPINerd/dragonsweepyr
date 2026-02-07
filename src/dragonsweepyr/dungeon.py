@@ -295,7 +295,17 @@ class Floor:
 
             # Create tile instance
             if isinstance(tile_class, type):
+                # It's a class, instantiate it
                 tile = tile_class()
+            elif callable(tile_class):
+                # It's a factory function, call it with appropriate kwargs
+                # Extract constructor-specific kwargs that the factory function expects
+                factory_kwargs = {}
+                constructor_params = ['monster_level', 'xp', 'contains']
+                for param in constructor_params:
+                    if param in kwargs:
+                        factory_kwargs[param] = kwargs.pop(param)
+                tile = tile_class(**factory_kwargs)
             else:
                 # If it's already an instance, make a deep copy
                 tile = copy.deepcopy(tile_class)
@@ -304,7 +314,7 @@ class Floor:
             tile.tx = x
             tile.ty = y
 
-            # Set additional properties from kwargs
+            # Set additional properties from kwargs (remaining after factory call)
             for key, value in kwargs.items():
 
                 if hasattr(tile, key):

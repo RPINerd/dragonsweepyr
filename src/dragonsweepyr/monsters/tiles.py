@@ -11,6 +11,7 @@ from dragonsweepyr.resources import assets
 from dragonsweepyr.utils import distance
 
 if TYPE_CHECKING:
+    from dragonsweepyr.monsters.entity_definitions import EntityDef
     from dragonsweepyr.resources import SpriteSheet
 
 
@@ -63,6 +64,7 @@ class BoardTile(pygame.sprite.Sprite):
 
     def __init__(self) -> None:
         """Initialize the board tile."""
+        super().__init__()
         self.tx = 0
         self.ty = 0
         self.fixed = False
@@ -85,6 +87,23 @@ class BoardTile(pygame.sprite.Sprite):
         self.isMonster = False
         self.name = "none"
         self.minotaurChestLocation = [-1, -1]
+        self._satisfaction_func = None
+
+    def load_from_def(self, definition: EntityDef) -> None:
+        """
+        Initialize tile from entity definition.
+
+        Args:
+            definition: EntityDef containing sprite and entity data.
+        """
+        self.id = definition.id
+        self.strip_frame = definition.sprite_frame
+        self.isMonster = definition.is_monster
+        self.monster_level = definition.monster_level
+        self.xp = definition.xp
+        self.deadStripFrame = definition.dead_frame
+        self._satisfaction_func = definition.satisfaction_func
+        self.name = definition.name.lower()
 
     def set_frame(self, frame: int) -> None:
         """Set the frame of the tile's sprite strip."""
@@ -116,6 +135,8 @@ class BoardTile(pygame.sprite.Sprite):
         Returns:
             An integer representing the satisfaction value.
         """
+        if self._satisfaction_func:
+            return self._satisfaction_func(self)
         return 0
 
     def on_reveal(self) -> None:
