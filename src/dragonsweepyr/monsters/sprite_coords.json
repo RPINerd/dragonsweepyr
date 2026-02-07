@@ -1,7 +1,7 @@
 {
     "rat": {
-        "x": 90,
-        "y": 265,
+        "x": 80,
+        "y": 256,
         "frame": 261,
         "width": 16,
         "height": 16,
@@ -9,8 +9,8 @@
         "pivot_y": 8
     },
     "wizard": {
-        "x": 72,
-        "y": 76,
+        "x": 64,
+        "y": 64,
         "frame": 68,
         "width": 16,
         "height": 16,
@@ -18,8 +18,8 @@
         "pivot_y": 8
     },
     "bat": {
-        "x": 134,
-        "y": 231,
+        "x": 128,
+        "y": 224,
         "frame": 232,
         "width": 16,
         "height": 16,
@@ -27,8 +27,8 @@
         "pivot_y": 8
     },
     "skeleton": {
-        "x": 70,
-        "y": 134,
+        "x": 64,
+        "y": 128,
         "frame": 132,
         "width": 16,
         "height": 16,
@@ -36,8 +36,8 @@
         "pivot_y": 8
     },
     "gargoyle": {
-        "x": 26,
-        "y": 210,
+        "x": 16,
+        "y": 208,
         "frame": 209,
         "width": 16,
         "height": 16,
@@ -46,7 +46,7 @@
     },
     "gargoyle_left": {
         "x": 0,
-        "y": 210,
+        "y": 208,
         "frame": 208,
         "width": 16,
         "height": 16,
@@ -54,8 +54,8 @@
         "pivot_y": 8
     },
     "gargoyle_up": {
-        "x": 0,
-        "y": 210,
+        "x": 16,
+        "y": 208,
         "frame": 209,
         "width": 16,
         "height": 16,
@@ -63,8 +63,8 @@
         "pivot_y": 8
     },
     "gargoyle_down": {
-        "x": 0,
-        "y": 210,
+        "x": 32,
+        "y": 208,
         "frame": 210,
         "width": 16,
         "height": 16,
@@ -72,8 +72,8 @@
         "pivot_y": 8
     },
     "gargoyle_right": {
-        "x": 0,
-        "y": 210,
+        "x": 48,
+        "y": 208,
         "frame": 211,
         "width": 16,
         "height": 16,
@@ -81,8 +81,8 @@
         "pivot_y": 8
     },
     "slime": {
-        "x": 86,
-        "y": 473,
+        "x": 80,
+        "y": 464,
         "frame": 469,
         "width": 16,
         "height": 16,
@@ -90,8 +90,8 @@
         "pivot_y": 8
     },
     "rat_king": {
-        "x": 70,
-        "y": 265,
+        "x": 64,
+        "y": 256,
         "frame": 260,
         "width": 16,
         "height": 16,
@@ -99,8 +99,8 @@
         "pivot_y": 8
     },
     "gazer": {
-        "x": 135,
-        "y": 180,
+        "x": 128,
+        "y": 176,
         "frame": 184,
         "width": 16,
         "height": 16,
@@ -108,8 +108,8 @@
         "pivot_y": 8
     },
     "eye": {
-        "x": 135,
-        "y": 167,
+        "x": 128,
+        "y": 160,
         "frame": 168,
         "width": 16,
         "height": 16,
@@ -117,8 +117,8 @@
         "pivot_y": 8
     },
     "dark_knight_level5": {
-        "x": 200,
-        "y": 168,
+        "x": 192,
+        "y": 160,
         "frame": 172,
         "width": 16,
         "height": 16,
@@ -126,8 +126,8 @@
         "pivot_y": 8
     },
     "minotaur": {
-        "x": 200,
-        "y": 326,
+        "x": 192,
+        "y": 320,
         "frame": 332,
         "width": 16,
         "height": 16,
@@ -135,8 +135,8 @@
         "pivot_y": 8
     },
     "snake": {
-        "x": 250,
-        "y": 250,
+        "x": 240,
+        "y": 240,
         "frame": 255,
         "width": 16,
         "height": 16,
@@ -144,8 +144,8 @@
         "pivot_y": 8
     },
     "guard": {
-        "x": 200,
-        "y": 200,
+        "x": 192,
+        "y": 192,
         "frame": 204,
         "width": 16,
         "height": 16,
@@ -153,8 +153,8 @@
         "pivot_y": 8
     },
     "guard1": {
-        "x": 200,
-        "y": 200,
+        "x": 192,
+        "y": 192,
         "frame": 204,
         "width": 16,
         "height": 16,
@@ -162,8 +162,8 @@
         "pivot_y": 8
     },
     "guard2": {
-        "x": 200,
-        "y": 200,
+        "x": 208,
+        "y": 192,
         "frame": 205,
         "width": 16,
         "height": 16,
@@ -171,8 +171,8 @@
         "pivot_y": 8
     },
     "guard3": {
-        "x": 200,
-        "y": 200,
+        "x": 240,
+        "y": 192,
         "frame": 207,
         "width": 16,
         "height": 16,
@@ -180,8 +180,8 @@
         "pivot_y": 8
     },
     "guard4": {
-        "x": 200,
-        "y": 200,
+        "x": 224,
+        "y": 192,
         "frame": 206,
         "width": 16,
         "height": 16,
@@ -189,8 +189,8 @@
         "pivot_y": 8
     },
     "dark_knight_level7": {
-        "x": 200,
-        "y": 100,
+        "x": 192,
+        "y": 96,
         "frame": 108,
         "width": 16,
         "height": 16,
@@ -198,8 +198,8 @@
         "pivot_y": 8
     },
     "big_slime": {
-        "x": 120,
-        "y": 455,
+        "x": 112,
+        "y": 448,
         "frame": 455,
         "width": 16,
         "height": 16,
@@ -208,7 +208,7 @@
     },
     "giant": {
         "x": 0,
-        "y": 450,
+        "y": 448,
         "frame": 448,
         "width": 16,
         "height": 16,
@@ -216,8 +216,8 @@
         "pivot_y": 8
     },
     "death": {
-        "x": 130,
-        "y": 340,
+        "x": 128,
+        "y": 336,
         "frame": 344,
         "width": 16,
         "height": 16,
@@ -225,8 +225,8 @@
         "pivot_y": 8
     },
     "mine_king": {
-        "x": 250,
-        "y": 135,
+        "x": 240,
+        "y": 128,
         "frame": 143,
         "width": 16,
         "height": 16,
@@ -234,8 +234,8 @@
         "pivot_y": 8
     },
     "mimic": {
-        "x": 70,
-        "y": 360,
+        "x": 64,
+        "y": 352,
         "frame": 356,
         "width": 16,
         "height": 16,
@@ -243,8 +243,8 @@
         "pivot_y": 8
     },
     "mimic_alternate": {
-        "x": 70,
-        "y": 375,
+        "x": 64,
+        "y": 368,
         "frame": 372,
         "width": 16,
         "height": 16,
@@ -252,8 +252,8 @@
         "pivot_y": 8
     },
     "dragon": {
-        "x": 200,
-        "y": 311,
+        "x": 192,
+        "y": 304,
         "frame": 316,
         "width": 16,
         "height": 16,
@@ -261,8 +261,8 @@
         "pivot_y": 8
     },
     "dragon_dead": {
-        "x": 230,
-        "y": 310,
+        "x": 224,
+        "y": 304,
         "frame": 318,
         "width": 16,
         "height": 16,
@@ -271,7 +271,7 @@
     },
     "dragon_egg": {
         "x": 0,
-        "y": 250,
+        "y": 240,
         "frame": 240,
         "width": 16,
         "height": 16,
@@ -279,8 +279,8 @@
         "pivot_y": 8
     },
     "dragon_egg_dead": {
-        "x": 0,
-        "y": 250,
+        "x": 16,
+        "y": 240,
         "frame": 241,
         "width": 16,
         "height": 16,
@@ -289,7 +289,7 @@
     },
     "fidel": {
         "x": 0,
-        "y": 408,
+        "y": 400,
         "frame": 400,
         "width": 16,
         "height": 16,
@@ -297,8 +297,8 @@
         "pivot_y": 8
     },
     "gnome": {
-        "x": 40,
-        "y": 408,
+        "x": 32,
+        "y": 400,
         "frame": 402,
         "width": 16,
         "height": 16,
@@ -306,8 +306,8 @@
         "pivot_y": 8
     },
     "mine": {
-        "x": 150,
-        "y": 455,
+        "x": 144,
+        "y": 448,
         "frame": 457,
         "width": 16,
         "height": 16,
@@ -315,8 +315,8 @@
         "pivot_y": 8
     },
     "mine_dead": {
-        "x": 170,
-        "y": 455,
+        "x": 160,
+        "y": 448,
         "frame": 458,
         "width": 16,
         "height": 16,
@@ -324,8 +324,8 @@
         "pivot_y": 8
     },
     "chest": {
-        "x": 70,
-        "y": 360,
+        "x": 64,
+        "y": 352,
         "frame": 356,
         "width": 16,
         "height": 16,
